@@ -1,0 +1,31 @@
+TODO 
+--------
+* Data Driven
+* Event Systems
+* Collision Manager 
+* Physics Component
+* Seraialization
+* VS2019 LICENSE IT GET
+
+PROGRESS
+--------
+
+* OpenGL contexts 
+* Animation Component
+
+
+DONE
+--------
+* level manager 
+* Graphics Manager (SDL_SURFACE version)
+* Input Manager
+* TransformComponent
+* Vector2D Math
+* Object Component
+* Game Object 
+* Entity Component System
+* Object Factory
+* Frame Rate Controller
+* Input Manager controls
+* Sprite Render Component 
+* Archetypes (combinations of componenets)
