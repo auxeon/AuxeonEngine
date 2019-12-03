@@ -6,7 +6,7 @@
 #include <iostream>
 #include <cstring>
 #include <unordered_map>
-#include "../../SDL2-2.0.10/include/SDL.h"
+#include "../libs/SDL2-2.0.10/include/SDL.h"
 
 using InputMap = std::unordered_map<std::string,SDL_Scancode>;
 
@@ -19,7 +19,7 @@ private:
 	static InputManager* inmInstance;
 	static bool inmInstantiated;
 
-	const Uint8* inmCurrentKeyboardState;
+	Uint8* inmCurrentKeyboardState;
 	Uint8* inmPrevKeyboardState;
 	int inmKeyCount;
 	InputMap profile1;
@@ -45,6 +45,7 @@ public:
 private:
 	InputManager();
 	~InputManager();
+	bool inmInit();
 
 };
 

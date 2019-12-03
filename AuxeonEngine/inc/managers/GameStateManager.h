@@ -32,7 +32,6 @@ public:
 // functions
 public:
 
-	bool gsmInit();
 	bool gsmCleanup();
 
 	bool gsmIsRunning() { return gsmRunning; };
@@ -58,6 +57,7 @@ private:
 private:
 	GameStateManager();
 	~GameStateManager();
+	bool gsmInit();
 };
 
 // do not instantiate the static members inside the .h file otherwise you get LNK2005 

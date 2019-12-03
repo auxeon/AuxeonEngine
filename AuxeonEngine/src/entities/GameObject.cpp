@@ -10,20 +10,23 @@ void GameObject::gaxDestroy() {
 }
 
 // Assumption is that you can't create any object with out a position.
-GameObject::GameObject(bool active) : gaxDebugDraw(false), gaxActive(active), gaxParent(NULL){
-
+GameObject::GameObject(GameObjectID id, bool active) : gaxDebugDraw(false), gaxActive(active), gaxParent(NULL), gaxID(id){
+	std::cout << "GameObject : " << this << " created\n";
 }
 // GameObject destroyer
 GameObject::~GameObject() {
+
 	if (!gaxComponentMap.empty()) {
 		gaxComponentMap.clear();
 	}
+
+	std::cout << "GameObject : " << this << " destroyed\n";
 }
 
 // GameObject HandleEvent calls
 void GameObject::gaxHandleEvents() {
 	if (!gaxComponentMap.empty()) {
-		for (auto component : gaxComponentMap) {
+		for (auto& component : gaxComponentMap) {
 			component.second->comHandleEvents();
 		}
 	}
@@ -32,7 +35,7 @@ void GameObject::gaxHandleEvents() {
 // GameObject Update calls
 void GameObject::gaxUpdate() {
 	if (!gaxComponentMap.empty()) {
-		for (auto component : gaxComponentMap) {
+		for (auto& component : gaxComponentMap) {
 			component.second->comUpdate();
 		}
 	}
@@ -41,7 +44,7 @@ void GameObject::gaxUpdate() {
 // GameObject Draw calls
 void GameObject::gaxDraw() {
 	if (!gaxComponentMap.empty()) {
-		for (auto component : gaxComponentMap) {
+		for (auto& component : gaxComponentMap) {
 			component.second->comDraw();
 		}
 	}

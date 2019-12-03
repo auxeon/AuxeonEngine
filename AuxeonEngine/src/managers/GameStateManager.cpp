@@ -24,7 +24,6 @@ GameStateManager* GameStateManager::gsmCreate() {
 	if (!gsmInstantiated) {
 		gsmInstance = new GameStateManager();
 		if (NULL != gsmInstance) {
-			gsmInstantiated = true;
 			gsmRunning = true;
 		}
 	}
@@ -48,6 +47,7 @@ bool GameStateManager::gsmGetInstantiated() {
 
 // Default constructor
 GameStateManager::GameStateManager() : gsmCurrState(NULL), gsmPrevState(NULL){
+	gsmInstantiated = gsmInit();
 	std::cout << "GameStateManager : default constructed\n";
 }
 

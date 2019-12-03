@@ -4,7 +4,7 @@
 #define LEVEL001_H
 
 // external includes
-#include "../../SDL2-2.0.10/include/SDL.h"
+#include "../libs/SDL2-2.0.10/include/SDL.h"
 
 // manager includes
 #include "../inc/managers/StateManager.h"
@@ -23,6 +23,7 @@
 #include "../inc/components/TransformComponent.h"
 #include "../inc/components/ControllerComponent.h"
 #include "../inc/components/SpriteComponent.h"
+#include "../inc/components/ModelComponent.h"
 
 // each state/level is going to be a singleton 
 class Level001 : public State{

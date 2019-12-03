@@ -49,6 +49,7 @@ void GameObjectFactory::gofUpdate() {
 }
 
 void GameObjectFactory::gofDraw() {
+
 	if (!gofGameObjects.empty()) {
 		for (auto& go : gofGameObjects) {
 			if (NULL != go.second) {
@@ -61,6 +62,7 @@ void GameObjectFactory::gofDraw() {
 }
 
 void GameObjectFactory::gofHandleEvents() {
+
 	if (!gofGameObjects.empty()) {
 		for (auto& go : gofGameObjects) {
 			if (NULL != go.second) {
@@ -74,6 +76,7 @@ void GameObjectFactory::gofHandleEvents() {
 
 
 void GameObjectFactory::gofEraseInactiveObjects() {
+
 	if (!gofGameObjects.empty()) {
 		for (auto& go : gofGameObjects) {
 			if (NULL != go.second) {
@@ -88,15 +91,19 @@ void GameObjectFactory::gofEraseInactiveObjects() {
 }
 
 void GameObjectFactory::gofEraseAllObjects() {
+
 	if (!gofGameObjects.empty()) {
+		for (auto& go : gofGameObjects) {
+			delete go.second;
+		}
 		gofGameObjects.clear();
 	}
-	std::cout << "GameObjectFactory : erased all gameobjects\n";
+	
 }
 
 GameObject& GameObjectFactory::gofCreateObject() {
-	GameObject* tggh = new GameObject(true);
-	gofGameObjects.insert(std::make_pair<int, GameObject*>(getGameObjectID(), (GameObject*)tggh));
-	return(*tggh);
-	std::cout << "GameObjectFactory : object "<<tggh<<" created\n";
+	GameObjectID id = getGameObjectID();
+	GameObject* go = new GameObject(id,true);
+	gofGameObjects.insert(std::make_pair(id, (GameObject*)go));
+	return(*go);
 }

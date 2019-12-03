@@ -3,19 +3,28 @@
 
 TransformComponent::TransformComponent() {
 	std::cout << "default txf constructed !\n";
-	Vector2DSet(&txfPosition, 0, 0);
-	Vector2DSet(&txfVelocity, 0.0f, 0.0f);
-	Vector2DSet(&txfUpVec, 0.0f, 1.0f);
-	Vector2DSet(&txfRightVec, 1.0f, 0.0f);
+	// orientation vecs
 	txfMaxSpeed = 0.0f;
+	txfPosition = vec3(0.0f, 0.0f, 0.0f);
+	txfWorldUpVec = vec3(0.0f, 1.0f, 0.0f);
+	txfTarget = vec3(0.0f,0.0f,0.0f);
+	txfLookVec = glm::normalize(txfTarget - txfPosition);
+	txfRightVec = vec3(glm::cross(txfWorldUpVec,txfLookVec));
+	txfUpVec = vec3(glm::cross(txfLookVec,txfRightVec));
+	
 }
 
 TransformComponent::TransformComponent(float x, float y, float max_speed){
-	Vector2DSet(&txfPosition, x, y);
-	Vector2DSet(&txfVelocity, 0.0f, 0.0f);
-	Vector2DSet(&txfUpVec, 0.0f, 1.0f);
-	Vector2DSet(&txfRightVec, 1.0f, 0.0f);
+
+	// orientation vecs
 	txfMaxSpeed = max_speed;
+	txfPosition = vec3(x, y, 0.0f);
+	txfWorldUpVec = vec3(0.0f, 1.0f, 0.0f);
+	txfTarget = vec3(0.0f, 0.0f, 0.0f);
+	txfLookVec = glm::normalize(txfTarget - txfPosition);
+	txfRightVec = vec3(glm::cross(txfWorldUpVec, txfLookVec));
+	txfUpVec = vec3(glm::cross(txfLookVec, txfRightVec));
+
 }
 
 TransformComponent::~TransformComponent() {
@@ -23,7 +32,7 @@ TransformComponent::~TransformComponent() {
 }
 
 void TransformComponent::comInit() {
-	txfMaxSpeed = 2.0f;
+
 }
 
 void TransformComponent::comDraw() {
@@ -35,5 +44,12 @@ void TransformComponent::comUpdate() {
 }
 
 void TransformComponent::comHandleEvents() {
+
+}
+
+void TransformComponent::txfRotate(float _theta) {
+}
+
+void TransformComponent::txfTranslate(float _x, float _y) {
 
 }

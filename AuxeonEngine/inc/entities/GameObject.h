@@ -5,17 +5,20 @@
 // helpers
 #include<unordered_map>
 #include<bitset>
-#include "../inc/helpers/Vector2D.h"
 
-// Components
+// entities
 #include "../inc/entities/Component.h"
-#include "../inc/components/TransformComponent.h"
+// components
+#include "../inc/components/CameraComponent.h"
+// managers
+#include "../inc/managers/GraphicsManager.h"
 
 constexpr std::size_t MAX_COMS = 16;
 
 using ComponentBitset = std::bitset<MAX_COMS>;
 using ComponentMap = std::unordered_map<int, Component*>;
 using ComponentID = std::size_t;
+using GameObjectID = std::size_t;
 
 
 // Static component ID helpers
@@ -35,6 +38,8 @@ class GameObject
 
 public:
 	bool gaxDebugDraw;
+	GameObjectID gaxID;
+
 public:
 
 	// obejct status
@@ -46,7 +51,7 @@ public:
 	void gaxDraw();
 	
 	// construct destruct
-	GameObject(bool active = true);
+	GameObject(GameObjectID id, bool active = true);
 	~GameObject();
 	void gaxDestroy();
 

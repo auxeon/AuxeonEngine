@@ -6,7 +6,10 @@ bool Level001::stateInstantiated = false;
 Level001* Level001::stateInstance = nullptr;
 GameStateManager* Level001::stateGameStateManager = NULL;
 
-GameObject* player = NULL;
+GameObject* player1 = NULL;
+GameObject* player2 = NULL;
+GameObject* cam01 = NULL;
+GameObject* wall[10] = { NULL };
 
 bool Level001::stateGetExists() {
 	return(stateGetInstantiated());
@@ -17,11 +20,27 @@ void Level001::stateInit() {
 	// setting the FPS 
 	stateFrameRateManager->fpsSetFPS(60.0f);
 
+	// adding the camera
+	cam01 = &stateGameObjectFactory->gofCreateObject();
+	cam01->gaxAddComponent<CameraComponent>();
+
 	// create game objects and init them with values
-	player = &stateGameObjectFactory->gofCreateObject();
-	player->gaxAddComponent<TransformComponent>();
-	player->gaxAddComponent<ControllerComponent>(2);
-	player->gaxAddComponent<SpriteComponent>("res/sprites/player1.bmp");
+	player1 = &stateGameObjectFactory->gofCreateObject();
+	player1->gaxAddComponent<TransformComponent>(0.0f,0.0f,0.1f);
+	player1->gaxAddComponent<ControllerComponent>(1);
+	player1->gaxAddComponent<ModelComponent>("res/sprites/player1.bmp");
+
+	player2 = &stateGameObjectFactory->gofCreateObject();
+	player2->gaxAddComponent<TransformComponent>(0.0f,0.0f,0.1f);
+	player2->gaxAddComponent<ControllerComponent>(2);
+	player2->gaxAddComponent<ModelComponent>("res/sprites/player2.bmp");
+
+	//creating the wall
+	for (int i = 0; i < 3;++i) {
+		wall[i] = &stateGameObjectFactory->gofCreateObject();
+		wall[i]->gaxAddComponent<TransformComponent>(-1 + i*0.3f, -1.0f, 0.0f);
+		wall[i]->gaxAddComponent<ModelComponent>("res/textures/wall.jpg");
+	}
 }
 
 void Level001::stateCleanup() {
@@ -57,25 +76,32 @@ void Level001::stateHandleEvents() {
 void Level001::stateDraw() {
 	// show changes on the screen by calls the draw functions 
 	if (stateFrameRateManager->fpsGetDeltaTime() > stateFrameRateManager->fpsGetFrameTimeCap()) {
-		char fpsString[15];
-		sprintf_s(fpsString, "%.2f FPS", 1/stateFrameRateManager->fpsGetDeltaTime());
+		char fpsString[72];
+		sprintf_s(fpsString, "%.2f FPS - P1 : %f, %f - P2 : %f, %f", 1 / stateFrameRateManager->fpsGetDeltaTime(), player1->gaxGetComponent<TransformComponent>().txfPosition.x, player1->gaxGetComponent<TransformComponent>().txfPosition.y, player2->gaxGetComponent<TransformComponent>().txfPosition.x, player2->gaxGetComponent<TransformComponent>().txfPosition.y);
+		//std::cout << "Frame Time : " << stateFrameRateManager->fpsGetDeltaTime() << std::endl;
 		stateGraphicsManager->gfxSetWindowTitle(fpsString);
-		stateGraphicsManager->gfxDraw();
-		// all managers call draw
-		stateInputManager->inmDraw();
+		
 		// all objects call draw 
 		stateGameObjectFactory->gofDraw();
+		// all managers call draw
+		stateInputManager->inmDraw();
+		stateGraphicsManager->gfxDraw();
 		stateFrameRateManager->fpsReset();
 	}
+
 }
 
 void Level001::stateUpdate() {
 
 	stateFrameRateManager->fpsUpdate();
+	
+	//if (player1->gaxIsActive() && player1->gaxComponentExists<TransformComponent>()) {
+	//	std::cout << "player1 pos : " << player1->gaxGetComponent<TransformComponent>().txfPosition.x << ", " << player1->gaxGetComponent<TransformComponent>().txfPosition.y << std::endl;
+	//}
 
-	/*if (player->gaxIsActive() && player->gaxComponentExists<TransformComponent>()) {
-		std::cout << "player pos : " << player->gaxGetComponent<TransformComponent>().txfPosition.x << ", " << player->gaxGetComponent<TransformComponent>().txfPosition.y << std::endl;
-	}*/
+	//if (player2->gaxIsActive() && player2->gaxComponentExists<TransformComponent>()) {
+	//	std::cout << "player2 pos : " << player2->gaxGetComponent<TransformComponent>().txfPosition.x << ", " << player2->gaxGetComponent<TransformComponent>().txfPosition.y << std::endl;
+	//}
 
 	// all managers call update
 	stateResourceManager->resUpdate();
@@ -83,7 +109,7 @@ void Level001::stateUpdate() {
 	stateInputManager->inmUpdate();
 	// for all objects call update 
 	stateGameObjectFactory->gofUpdate();
-
+	
 }
 
 // To create the gamestatemanagerinstance
@@ -154,10 +180,10 @@ Level001::Level001() : stateEvent({NULL}) {
 
 // Default destructor
 Level001::~Level001() {
-	std::cout << "Level001 : default destructed\n";
-
-	stateGraphicsManager->gfxDestroy();
-	stateInputManager->inmDestroy();
-	stateResourceManager->resDestroy();
 	stateGameObjectFactory->gofDestroy();
+	stateResourceManager->resDestroy();
+	stateInputManager->inmDestroy();
+	stateGraphicsManager->gfxDestroy();
+	stateFrameRateManager->fpsDestroy();
+	std::cout << "Level001 : default destructed\n";
 }

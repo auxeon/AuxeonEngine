@@ -1,22 +1,30 @@
 #include "../inc/managers/FrameRateManager.h"
+#include <iostream>
 
 FrameRateManager* FrameRateManager::fpsInstance = NULL;
 bool FrameRateManager::fpsInstantiated = false;
 float FrameRateManager::fpsCap;
 float FrameRateManager::fpsFrameTime;
 
+
+bool FrameRateManager::fpsInit() {
+	std::cout << "FrameRateManager : init" << std::endl;
+	return true;
+}
+
 FrameRateManager::FrameRateManager() : fpsTimeScale(1.0f) {
+	fpsInstantiated = fpsInit();
 	fpsReset();
+	std::cout << "FrameRateManager : default constructed" << std::endl;
 }
 
 FrameRateManager::~FrameRateManager() {
-
+	std::cout << "FrameRateManager : default destructed" << std::endl;
 }
 
 FrameRateManager* FrameRateManager::fpsCreate() {
 	if (!fpsInstantiated) {
 		fpsInstance = new FrameRateManager;
-		fpsInstantiated = true;
 	}
 	return fpsInstance;
 }

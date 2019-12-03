@@ -3,8 +3,8 @@
 #define SDL_MAIN_HANDLED
 
 #include <iostream>
-#include "../inc/managers/GameStateManager.h"
-#include "../inc/states/Level001.h"
+#include "inc/managers/GameStateManager.h"
+#include "inc/states/Level001.h"
 
 FILE _iob[] = { *stdin, *stdout, *stderr };
 
@@ -20,9 +20,6 @@ int main()
 	// create the main game object 
 	GameStateManager* game = GameStateManager::gsmCreate();
 	
-	// initialize the game
-	game->gsmInit();
-
 	// load the 1st level
 	game->gsmChangeState(Level001::stateCreate(game));
 

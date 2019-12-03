@@ -3,7 +3,7 @@
 #define RESOURCEMANAGER_H
 
 #include <unordered_map>
-#include "../../SDL2-2.0.10/include/SDL.h"
+#include "../libs/SDL2-2.0.10/include/SDL.h"
 
 
 using ResourceMap = std::unordered_map<const char*, SDL_Surface*>;
@@ -29,7 +29,7 @@ public:
 private:
 	ResourceManager();
 	~ResourceManager();
-
+	bool resInit();
 };
 
 

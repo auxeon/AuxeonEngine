@@ -3,7 +3,7 @@
 #ifndef FRAMERATEMANAGER_H
 #define FRAMERATEMANAGER_H
 
-#include "../../SDL2-2.0.10/include/SDL.h"
+#include "../libs/SDL2-2.0.10/include/SDL.h"
 
 class FrameRateManager
 {
@@ -42,7 +42,7 @@ private:
 private:
 	FrameRateManager();
 	~FrameRateManager();
-
+	bool fpsInit();
 };
 
 #endif

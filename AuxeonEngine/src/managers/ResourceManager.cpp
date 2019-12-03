@@ -1,4 +1,5 @@
 #include "../inc/managers/ResourceManager.h"
+#include <iostream>
 
 ResourceManager* ResourceManager::resInstance = NULL;
 bool ResourceManager::resInstantiated = false;
@@ -27,7 +28,8 @@ bool ResourceManager::resGetInstantiated() {
 }
 
 ResourceManager::ResourceManager() {
-	resInstantiated = true;
+	resInstantiated = resInit();
+	std::cout << "ResourceManager : default constructed" << std::endl;
 }
 
 ResourceManager::~ResourceManager() {
@@ -36,6 +38,7 @@ ResourceManager::~ResourceManager() {
 			SDL_FreeSurface(surf.second);
 		}
 	}
+	std::cout << "ResourceManager : default destructed" << std::endl;
 }
 
 
@@ -49,4 +52,9 @@ void ResourceManager::resDraw() {
 
 void ResourceManager::resHandleEvents() {
 
+}
+
+bool ResourceManager::resInit() {
+	std::cout << "ResourceManager : init" << std::endl;
+	return true;
 }
