@@ -36,7 +36,7 @@ void Level001::stateInit() {
 	player2->gaxAddComponent<ModelComponent>("res/sprites/player2.bmp");
 
 	//creating the wall
-	for (int i = 0; i < 3;++i) {
+	for (int i = 0; i < 10;++i) {
 		wall[i] = &stateGameObjectFactory->gofCreateObject();
 		wall[i]->gaxAddComponent<TransformComponent>(-1 + i*0.3f, -1.0f, 0.0f);
 		wall[i]->gaxAddComponent<ModelComponent>("res/textures/wall.jpg");

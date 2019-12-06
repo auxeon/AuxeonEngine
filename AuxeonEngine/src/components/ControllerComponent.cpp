@@ -6,10 +6,11 @@ ControllerComponent::ControllerComponent(int inputProfile) {
 	ctrlFrameRateManager = FrameRateManager::fpsCreate();
 
 	ctrlProfile = ctrlInputManager->inmGetProfile(inputProfile);
+	std::cout << "ControllerComponent : created \n";
 }
 
 ControllerComponent::~ControllerComponent() {
-
+	std::cout << "ControllerComponent : destructed \n";
 }
 
 void ControllerComponent::comInit() {
@@ -51,7 +52,6 @@ void ControllerComponent::comUpdate() {
 	if (ctrlInputManager->inmIsKeyTriggered(ctrlProfile["TEXTURE_TOGGLE"]) ){
 		std::cout << "space pressed" << std::endl;
 		comOwner->gaxGetComponent<ModelComponent>().mode = (comOwner->gaxGetComponent<ModelComponent>().mode+1)%2;
-
 	}
 
 }

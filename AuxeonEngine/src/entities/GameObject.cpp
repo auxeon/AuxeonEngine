@@ -16,6 +16,11 @@ GameObject::GameObject(GameObjectID id, bool active) : gaxDebugDraw(false), gaxA
 // GameObject destroyer
 GameObject::~GameObject() {
 
+
+	for (auto& com : gaxComponentMap) {
+		delete com.second;
+	}
+
 	if (!gaxComponentMap.empty()) {
 		gaxComponentMap.clear();
 	}

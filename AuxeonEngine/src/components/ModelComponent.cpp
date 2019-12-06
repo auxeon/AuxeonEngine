@@ -12,11 +12,12 @@ ModelComponent::ModelComponent(String _modTexPath) : modTexPath(_modTexPath){
 
 	// matrices
 	modScale = modRotate = modTranslate = glm::mat4(1.0f);
+	std::cout << "ModelComponent : created \n";
 }
 
 ModelComponent::~ModelComponent() {
-
 	delete modShader;
+	std::cout << "ModelComponent : destructed \n";
 }
 
 float sprHeight = 0.3f;
@@ -58,9 +59,9 @@ void ModelComponent::comInit() {
 
 void ModelComponent::comUpdate() {
 
-	vertices[0] = (0.0f + sprWidth / 2.0f); vertices[1] = (0.0f + sprHeight / 2.0f); vertices[2] = 0.0f; vertices[3] = 0.0f; vertices[4] = 0.0f; vertices[5] = 0.0f; vertices[6] = 1.0f; vertices[7] = 1.0f;// top right
-	vertices[8] = (0.0f + sprWidth / 2.0f); vertices[9] = (0.0f - sprHeight / 2.0f); vertices[10] = 0.0f; vertices[11] = 1.0f; vertices[12] = 1.0f; vertices[13] = 0.0f; vertices[14] = 1.0f; vertices[15] = 0.0f;// bottom right
-	vertices[16] = (0.0f - sprWidth / 2.0f); vertices[17] = (0.0f - sprHeight / 2.0f); vertices[18] = 0.0f; vertices[19] = 1.0f; vertices[20] = 0.0f; vertices[21] = 1.0f; vertices[22] = 0.0f; vertices[23] = 0.0f;// bottom left
+	vertices[0] = (0.0f + sprWidth / 2.0f); vertices[1] = (0.0f + sprHeight / 2.0f); vertices[2] = 0.0f; vertices[3] = 0.0f; vertices[4] = 1.0f; vertices[5] = 0.0f; vertices[6] = 1.0f; vertices[7] = 1.0f;// top right
+	vertices[8] = (0.0f + sprWidth / 2.0f); vertices[9] = (0.0f - sprHeight / 2.0f); vertices[10] = 0.0f; vertices[11] = 0.0f; vertices[12] = 1.0f; vertices[13] = 0.0f; vertices[14] = 1.0f; vertices[15] = 0.0f;// bottom right
+	vertices[16] = (0.0f - sprWidth / 2.0f); vertices[17] = (0.0f - sprHeight / 2.0f); vertices[18] = 0.0f; vertices[19] = 0.0f; vertices[20] = 1.0f; vertices[21] = 0.0f; vertices[22] = 0.0f; vertices[23] = 0.0f;// bottom left
 	vertices[24] = (0.0f - sprWidth / 2.0f); vertices[25] = (0.0f + sprHeight / 2.0f); vertices[26] = 0.0f; vertices[27] = 0.0f; vertices[28] = 1.0f; vertices[29] = 0.0f; vertices[30] = 0.0f; vertices[31] = 1.0f;// top left 
 
 	unsigned int indices[] = {
@@ -120,23 +121,65 @@ void ModelComponent::comDraw() {
 	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// bind textures on corresponding texture units
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, modTexID);
 
-	// render the triangle
-	modShader->use();
 
-	int loc = glGetUniformLocation(modShader->ID, "ModelTr");
-	glUniformMatrix4fv(loc, 1, GL_FALSE, &modTransform[0][0]);
+	if (mode == 0) {
 
-	loc = glGetUniformLocation(modShader->ID, "mode");
-	glUniform1i(loc, mode);
-	
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		// bind textures on corresponding texture units
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, modTexID);
 
-	modShader->unuse();
+		// render the triangle
+		modShader->use();
+
+
+		int loc = glGetUniformLocation(modShader->ID, "ModelTr");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &modTransform[0][0]);
+
+		loc = glGetUniformLocation(modShader->ID, "mode");
+		glUniform1i(loc, mode);
+
+		glBindVertexArray(VAO);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		modShader->unuse();
+	}
+
+	if (mode == 1) {
+
+		// bind textures on corresponding texture units
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, modTexID);
+
+		// render the triangle
+		modShader->use();
+
+		int loc = glGetUniformLocation(modShader->ID, "ModelTr");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &modTransform[0][0]);
+
+		loc = glGetUniformLocation(modShader->ID, "mode");
+		glUniform1i(loc, 0);
+
+		glBindVertexArray(VAO);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+		loc = glGetUniformLocation(modShader->ID, "ModelTr");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &modTransform[0][0]);
+
+		loc = glGetUniformLocation(modShader->ID, "mode");
+		glUniform1i(loc, mode);
+
+		glBindVertexArray(VAO);
+
+		glDrawElements(GL_LINE_LOOP, 6, GL_UNSIGNED_INT, 0);
+
+		modShader->unuse();
+	}
+
+
 }
 
 void ModelComponent::comHandleEvents() {

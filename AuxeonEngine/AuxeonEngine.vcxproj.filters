@@ -60,16 +60,25 @@
     <ClCompile Include="src\managers\FrameRateManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\components\ModelComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\CameraComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="libs\GLAD-OPENGL-4.6\glad\src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libs\GLM-0.9.9.6\glm\detail\glm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\ModelComponent.cpp">
+    <ClCompile Include="src\components\ColliderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\CameraComponent.cpp">
+    <ClCompile Include="src\managers\CollisionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\Model3DComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,10 +125,16 @@
     <ClInclude Include="inc\managers\FrameRateManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="libs\GLAD-OPENGL-4.6\glad\include\glad\glad.h">
+    <ClInclude Include="inc\helpers\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="libs\GLAD-OPENGL-4.6\glad\include\KHR\khrplatform.h">
+    <ClInclude Include="inc\helpers\shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\components\ModelComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\components\CameraComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\SDL2-2.0.10\include\begin_code.h">
@@ -371,10 +386,10 @@
     <ClInclude Include="libs\SDL2-2.0.10\include\SDL_vulkan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\helpers\stb_image.h">
+    <ClInclude Include="libs\GLAD-OPENGL-4.6\glad\include\glad\glad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\helpers\shader.h">
+    <ClInclude Include="libs\GLAD-OPENGL-4.6\glad\include\KHR\khrplatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\GLM-0.9.9.6\glm\detail\_features.hpp">
@@ -1106,14 +1121,21 @@
     <ClInclude Include="libs\GLM-0.9.9.6\glm\vector_relational.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\components\ModelComponent.h">
+    <ClInclude Include="inc\components\ColliderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\components\CameraComponent.h">
+    <ClInclude Include="inc\CollisionManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\components\Model3DComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\fragment\sprite.fragment" />
+    <None Include="shaders\vertex\sprite.vertex" />
+    <None Include="shaders\fragment\triangle.fragment" />
+    <None Include="shaders\vertex\triangle.vertex" />
     <None Include="libs\GLM-0.9.9.6\doc\api\search\all_0.html" />
     <None Include="libs\GLM-0.9.9.6\doc\api\search\all_1.html" />
     <None Include="libs\GLM-0.9.9.6\doc\api\search\all_2.html" />
@@ -2212,22 +2234,10 @@
     <None Include="libs\GLM-0.9.9.6\glm\gtx\wrap.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="shaders\fragment\sprite.fragment" />
-    <None Include="shaders\vertex\sprite.vertex" />
-    <None Include="shaders\fragment\triangle.fragment" />
-    <None Include="shaders\vertex\triangle.vertex" />
-    <None Include="libs\SDL2-2.0.10\lib\x86\SDL2.dll" />
-    <None Include="libs\SDL2-2.0.10\lib\x64\SDL2.dll" />
     <None Include="libs\DLLS\x64\SDL2.dll" />
     <None Include="libs\DLLS\x86\SDL2.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="libs\GLAD-OPENGL-4.6\gladPermalink.txt" />
-    <Text Include="libs\SDL2-2.0.10\BUGS.txt" />
-    <Text Include="libs\SDL2-2.0.10\COPYING.txt" />
-    <Text Include="libs\SDL2-2.0.10\README.txt" />
-    <Text Include="libs\SDL2-2.0.10\README-SDL.txt" />
-    <Text Include="libs\SDL2-2.0.10\WhatsNew.txt" />
+    <None Include="libs\SDL2-2.0.10\lib\x64\SDL2.dll" />
+    <None Include="libs\SDL2-2.0.10\lib\x86\SDL2.dll" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\sprites\circle.bmp">
@@ -2247,11 +2257,19 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="libs\SDL2-2.0.10\lib\x86\SDL2.lib" />
-    <Library Include="libs\SDL2-2.0.10\lib\x86\SDL2main.lib" />
-    <Library Include="libs\SDL2-2.0.10\lib\x86\SDL2test.lib" />
     <Library Include="libs\SDL2-2.0.10\lib\x64\SDL2.lib" />
     <Library Include="libs\SDL2-2.0.10\lib\x64\SDL2main.lib" />
     <Library Include="libs\SDL2-2.0.10\lib\x64\SDL2test.lib" />
+    <Library Include="libs\SDL2-2.0.10\lib\x86\SDL2.lib" />
+    <Library Include="libs\SDL2-2.0.10\lib\x86\SDL2main.lib" />
+    <Library Include="libs\SDL2-2.0.10\lib\x86\SDL2test.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="libs\GLAD-OPENGL-4.6\gladPermalink.txt" />
+    <Text Include="libs\SDL2-2.0.10\BUGS.txt" />
+    <Text Include="libs\SDL2-2.0.10\COPYING.txt" />
+    <Text Include="libs\SDL2-2.0.10\README-SDL.txt" />
+    <Text Include="libs\SDL2-2.0.10\README.txt" />
+    <Text Include="libs\SDL2-2.0.10\WhatsNew.txt" />
   </ItemGroup>
 </Project>

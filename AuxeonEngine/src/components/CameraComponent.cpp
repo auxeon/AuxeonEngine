@@ -1,15 +1,16 @@
 #include "../inc/components/CameraComponent.h"
 
 CameraComponent::CameraComponent() {
-
+	std::cout << "CameraComponent : created \n";
 }
 
 CameraComponent::~CameraComponent() {
 	// removing camera objects from GraphicsManager before deleting the component
-	std::cout << "CameraComponent : destructed \n";
+	
 	if (comOwner->gaxComponentExists<CameraComponent>()) {
 		GraphicsManager::gfxCreate()->gfxRemoveCam(std::make_pair(comOwner->gaxID, comOwner));
 	}
+	std::cout << "CameraComponent : destructed \n";
 }
 
 void CameraComponent::comInit() {

@@ -2,7 +2,7 @@
 #include <iostream>
 
 TransformComponent::TransformComponent() {
-	std::cout << "default txf constructed !\n";
+	
 	// orientation vecs
 	txfMaxSpeed = 0.0f;
 	txfPosition = vec3(0.0f, 0.0f, 0.0f);
@@ -11,11 +11,12 @@ TransformComponent::TransformComponent() {
 	txfLookVec = glm::normalize(txfTarget - txfPosition);
 	txfRightVec = vec3(glm::cross(txfWorldUpVec,txfLookVec));
 	txfUpVec = vec3(glm::cross(txfLookVec,txfRightVec));
+	std::cout << "TransformComponent : created \n";
 	
 }
 
 TransformComponent::TransformComponent(float x, float y, float max_speed){
-
+	
 	// orientation vecs
 	txfMaxSpeed = max_speed;
 	txfPosition = vec3(x, y, 0.0f);
@@ -24,11 +25,12 @@ TransformComponent::TransformComponent(float x, float y, float max_speed){
 	txfLookVec = glm::normalize(txfTarget - txfPosition);
 	txfRightVec = vec3(glm::cross(txfWorldUpVec, txfLookVec));
 	txfUpVec = vec3(glm::cross(txfLookVec, txfRightVec));
+	std::cout << "TransformComponent : created \n";
 
 }
 
 TransformComponent::~TransformComponent() {
-
+	std::cout << "TransformComponent : destructed \n";
 }
 
 void TransformComponent::comInit() {

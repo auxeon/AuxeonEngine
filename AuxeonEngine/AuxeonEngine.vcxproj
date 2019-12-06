@@ -168,7 +168,9 @@
     <ClCompile Include="libs\GLAD-OPENGL-4.6\glad\src\glad.c" />
     <ClCompile Include="libs\GLM-0.9.9.6\glm\detail\glm.cpp" />
     <ClCompile Include="src\components\CameraComponent.cpp" />
+    <ClCompile Include="src\components\ColliderComponent.cpp" />
     <ClCompile Include="src\components\ControllerComponent.cpp" />
+    <ClCompile Include="src\components\Model3DComponent.cpp" />
     <ClCompile Include="src\components\ModelComponent.cpp" />
     <ClCompile Include="src\components\SpriteComponent.cpp" />
     <ClCompile Include="src\components\TransformComponent.cpp" />
@@ -176,6 +178,7 @@
     <ClCompile Include="src\entities\GameObject.cpp" />
     <ClCompile Include="src\factories\GameObjectFactory.cpp" />
     <ClCompile Include="src\helpers\Vector2D.cpp" />
+    <ClCompile Include="src\managers\CollisionManager.cpp" />
     <ClCompile Include="src\managers\FrameRateManager.cpp" />
     <ClCompile Include="src\managers\GameStateManager.cpp" />
     <ClCompile Include="src\managers\GraphicsManager.cpp" />
@@ -185,8 +188,11 @@
     <ClCompile Include="src\states\Level001.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\CollisionManager.h" />
     <ClInclude Include="inc\components\CameraComponent.h" />
+    <ClInclude Include="inc\components\ColliderComponent.h" />
     <ClInclude Include="inc\components\ControllerComponent.h" />
+    <ClInclude Include="inc\components\Model3DComponent.h" />
     <ClInclude Include="inc\components\ModelComponent.h" />
     <ClInclude Include="inc\components\SpriteComponent.h" />
     <ClInclude Include="inc\components\TransformComponent.h" />

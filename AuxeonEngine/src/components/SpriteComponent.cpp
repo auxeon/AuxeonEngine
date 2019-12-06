@@ -11,9 +11,11 @@ SpriteComponent::SpriteComponent(String path, int w, int h) : sprPath(path), spr
 	sprResourceManager = ResourceManager::resCreate();
 	sprSurface = new SDL_Surface;
 	sprRect = new SDL_Rect;
+	std::cout << "SpriteComponent : created \n";
 }
 
 SpriteComponent::~SpriteComponent() {
+	std::cout << "SpriteComponent : destructed \n";
 	delete sprSurface;
 	delete sprRect;
 

@@ -13,6 +13,7 @@ void main(){
 		FragColor = texture(moTexID, TexCoord);
 	}
 	else{
+		FragColor = texture(moTexID, TexCoord);
 		FragColor = vec4(ourColor,1.0);
 	}
 }

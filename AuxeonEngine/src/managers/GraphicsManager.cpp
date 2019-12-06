@@ -107,5 +107,5 @@ void GraphicsManager::gfxAddCam(GameObjectIDPair cam) {
 
 void GraphicsManager::gfxRemoveCam(GameObjectIDPair cam) {
 	gfxCamMap.erase(cam.first);
-	std::cout << "GraphicsManager : Camera inserted : " << cam.first << std::endl;
+	std::cout << "GraphicsManager : Camera deleted : " << cam.first << std::endl;
 }
