@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef MODELCOMPONENT_H
-#define MODELCOMPONENT_H
+#ifndef MODEL3DCOMPONENT_H
+#define MODEL3DCOMPONENT_H
 // helpers
 #include "../inc/helpers/shader.h"
 #include "../inc/helpers/stb_image.h"

@@ -3,7 +3,7 @@
 #define SDL_MAIN_HANDLED
 
 #include <iostream>
-#include "inc/managers/GameStateManager.h"
+//#include "inc/managers/GameStateManager.h"
 #include "inc/states/Level001.h"
 
 FILE _iob[] = { *stdin, *stdout, *stderr };

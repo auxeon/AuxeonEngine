@@ -1,4 +1,5 @@
 #include "../inc/components/Model3DComponent.h"
+#include <assimp/config.h>
 
 // comOwner is not available here 
 
@@ -20,11 +21,16 @@ Model3DComponent::~Model3DComponent() {
 	std::cout << "Model3DComponent : destructed \n";
 }
 
-float sH = 0.3f;
-float sW = 0.3f;
+float spH = 0.3f;
+float spW = 0.3f;
 
 // comOwner Available here on 
 void Model3DComponent::comInit() {
+
+	vertices[0] = (0.0f + spW / 2.0f); vertices[1] = (0.0f + spH / 2.0f); vertices[2] = 0.0f; vertices[3] = 0.0f; vertices[4] = 1.0f; vertices[5] = 0.0f; vertices[6] = 1.0f; vertices[7] = 1.0f;// top right
+	vertices[8] = (0.0f + spW / 2.0f); vertices[9] = (0.0f - spH / 2.0f); vertices[10] = 0.0f; vertices[11] = 0.0f; vertices[12] = 1.0f; vertices[13] = 0.0f; vertices[14] = 1.0f; vertices[15] = 0.0f;// bottom right
+	vertices[16] = (0.0f - spW / 2.0f); vertices[17] = (0.0f - spH / 2.0f); vertices[18] = 0.0f; vertices[19] = 0.0f; vertices[20] = 1.0f; vertices[21] = 0.0f; vertices[22] = 0.0f; vertices[23] = 0.0f;// bottom left
+	vertices[24] = (0.0f - spW / 2.0f); vertices[25] = (0.0f + spH / 2.0f); vertices[26] = 0.0f; vertices[27] = 0.0f; vertices[28] = 1.0f; vertices[29] = 0.0f; vertices[30] = 0.0f; vertices[31] = 1.0f;// top left 
 
 	modTranslate = glm::translate(glm::mat4(1.0f), comOwner->gaxGetComponent<TransformComponent>().txfPosition);
 
@@ -58,16 +64,6 @@ void Model3DComponent::comInit() {
 }
 
 void Model3DComponent::comUpdate() {
-
-	vertices[0] = (0.0f + sW / 2.0f); vertices[1] = (0.0f + sH / 2.0f); vertices[2] = 0.0f; vertices[3] = 0.0f; vertices[4] = 1.0f; vertices[5] = 0.0f; vertices[6] = 1.0f; vertices[7] = 1.0f;// top right
-	vertices[8] = (0.0f + sW / 2.0f); vertices[9] = (0.0f - sH / 2.0f); vertices[10] = 0.0f; vertices[11] = 0.0f; vertices[12] = 1.0f; vertices[13] = 0.0f; vertices[14] = 1.0f; vertices[15] = 0.0f;// bottom right
-	vertices[16] = (0.0f - sW / 2.0f); vertices[17] = (0.0f - sH / 2.0f); vertices[18] = 0.0f; vertices[19] = 0.0f; vertices[20] = 1.0f; vertices[21] = 0.0f; vertices[22] = 0.0f; vertices[23] = 0.0f;// bottom left
-	vertices[24] = (0.0f - sW / 2.0f); vertices[25] = (0.0f + sH / 2.0f); vertices[26] = 0.0f; vertices[27] = 0.0f; vertices[28] = 1.0f; vertices[29] = 0.0f; vertices[30] = 0.0f; vertices[31] = 1.0f;// top left 
-
-	unsigned int indices[] = {
-		0, 1, 3, // first triangle
-		1, 2, 3  // second triangle
-	};
 
 	// A mult B
 	// B*A
@@ -133,7 +129,7 @@ void Model3DComponent::comDraw() {
 		modShader->use();
 
 
-		int loc = glGetUniformLocation(modShader->ID, "Model3DTr");
+		int loc = glGetUniformLocation(modShader->ID, "ModelTr");
 		glUniformMatrix4fv(loc, 1, GL_FALSE, &modTransform[0][0]);
 
 		loc = glGetUniformLocation(modShader->ID, "mode");

@@ -23,8 +23,8 @@
 #include "../inc/components/TransformComponent.h"
 #include "../inc/components/ControllerComponent.h"
 #include "../inc/components/SpriteComponent.h"
-#include "../inc/components/ModelComponent.h"
-//#include "../inc/components/Model3DComponent.h"
+//#include "../inc/components/ModelComponent.h"
+#include "../inc/components/Model3DComponent.h"
 
 // each state/level is going to be a singleton 
 class Level001 : public State{

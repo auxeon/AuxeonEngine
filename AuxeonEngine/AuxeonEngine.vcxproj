@@ -115,13 +115,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>libs/SDL2-2.0.10/include/;libs/GLM-0.9.9.6/;libs/GLAD-OPENGL-4.6/glad/src;libs/GLAD-OPENGL-4.6/glad/include/;inc/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>libs/ASSIMP-5.0.0/include/;libs/SDL2-2.0.10/include/;libs/GLM-0.9.9.6/;libs/GLAD-OPENGL-4.6/glad/src;libs/GLAD-OPENGL-4.6/glad/include/;inc/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)libs\SDL2-2.0.10\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)libs\ASSIMP-5.0.0\lib\x64;$(SolutionDir)libs\SDL2-2.0.10\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference />
   </ItemDefinitionGroup>
@@ -165,6 +165,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AuxeonEngine.cpp" />
+    <ClCompile Include="inc\helpers\model.h" />
     <ClCompile Include="libs\GLAD-OPENGL-4.6\glad\src\glad.c" />
     <ClCompile Include="libs\GLM-0.9.9.6\glm\detail\glm.cpp" />
     <ClCompile Include="src\components\CameraComponent.cpp" />
@@ -198,6 +199,8 @@
     <ClInclude Include="inc\components\TransformComponent.h" />
     <ClInclude Include="inc\entities\Component.h" />
     <ClInclude Include="inc\entities\GameObject.h" />
+    <ClInclude Include="inc\helpers\cameraTest.h" />
+    <ClInclude Include="inc\helpers\mesh.h" />
     <ClInclude Include="inc\helpers\shader.h" />
     <ClInclude Include="inc\helpers\stb_image.h" />
     <ClInclude Include="inc\helpers\Vector2D.h" />
@@ -209,6 +212,82 @@
     <ClInclude Include="inc\managers\StateManager.h" />
     <ClInclude Include="inc\states\Level001.h" />
     <ClInclude Include="inc\factories\GameObjectFactory.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\aabb.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\ai_assert.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\anim.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\BaseImporter.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Bitmap.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\BlobIOSystem.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\ByteSwapper.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\camera.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\cexport.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\cfileio.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\cimport.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\color4.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Compiler\poppack1.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Compiler\pstdint.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\config.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\CreateAnimMesh.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\DefaultIOStream.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\DefaultIOSystem.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Defines.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\defs.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Exceptional.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Exporter.hpp" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\fast_atof.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\GenericProperty.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Hash.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Importer.hpp" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\importerdesc.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\IOStream.hpp" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\IOStreamBuffer.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\IOSystem.hpp" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\irrXMLWrapper.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\light.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\LineSplitter.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\LogAux.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Logger.hpp" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\LogStream.hpp" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\material.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\MathFunctions.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\matrix3x3.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\matrix4x4.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\MemoryIOWrapper.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\mesh.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\metadata.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\NullLogger.hpp" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\ParsingUtils.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\pbrmaterial.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\postprocess.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Profiler.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\qnan.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\quaternion.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\RemoveComments.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\scene.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\SceneCombiner.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\SGSpatialSort.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\SkeletonMeshBuilder.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\SmoothingGroups.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\SpatialSort.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\StandardShapes.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\StreamReader.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\StreamWriter.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\StringComparison.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\StringUtils.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Subdivision.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\texture.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\TinyFormatter.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\types.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\vector2.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\vector3.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\version.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\Vertex.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\XMLTools.h" />
+    <ClInclude Include="libs\ASSIMP-5.0.0\include\assimp\ZipArchiveIOSystem.h" />
     <ClInclude Include="libs\GLAD-OPENGL-4.6\glad\include\glad\glad.h" />
     <ClInclude Include="libs\GLAD-OPENGL-4.6\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="libs\GLM-0.9.9.6\glm\common.hpp" />
@@ -539,11 +618,21 @@
     <ClInclude Include="libs\SDL2-2.0.10\include\SDL_vulkan.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="libs\ASSIMP-5.0.0\include\assimp\color4.inl" />
+    <None Include="libs\ASSIMP-5.0.0\include\assimp\material.inl" />
+    <None Include="libs\ASSIMP-5.0.0\include\assimp\matrix3x3.inl" />
+    <None Include="libs\ASSIMP-5.0.0\include\assimp\matrix4x4.inl" />
+    <None Include="libs\ASSIMP-5.0.0\include\assimp\quaternion.inl" />
+    <None Include="libs\ASSIMP-5.0.0\include\assimp\SmoothingGroups.inl" />
+    <None Include="libs\ASSIMP-5.0.0\include\assimp\vector2.inl" />
+    <None Include="libs\ASSIMP-5.0.0\include\assimp\vector3.inl" />
     <None Include="libs\DLLS\x64\SDL2.dll" />
     <None Include="libs\DLLS\x86\SDL2.dll" />
     <None Include="libs\SDL2-2.0.10\lib\x64\SDL2.dll" />
     <None Include="libs\SDL2-2.0.10\lib\x86\SDL2.dll" />
+    <None Include="shaders\fragment\model.fragment" />
     <None Include="shaders\fragment\sprite.fragment" />
+    <None Include="shaders\vertex\model.vertex" />
     <None Include="shaders\vertex\triangle.vertex" />
     <None Include="shaders\vertex\sprite.vertex" />
     <None Include="libs\GLM-0.9.9.6\doc\api\a00001_source.html" />

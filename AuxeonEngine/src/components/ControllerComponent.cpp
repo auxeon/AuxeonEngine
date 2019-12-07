@@ -44,11 +44,18 @@ void ControllerComponent::comUpdate() {
 		comOwner->gaxGetComponent<ModelComponent>().modTranslate = glm::translate(comOwner->gaxGetComponent<ModelComponent>().modTranslate, glm::vec3(dt*speed, 0, 0));
 	}
 	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["ROT_RIGHT"])) {
-		comOwner->gaxGetComponent<ModelComponent>().modRotate = glm::rotate(comOwner->gaxGetComponent<ModelComponent>().modRotate, glm::radians(-0.1f), glm::vec3(0, 0, 1));
+		comOwner->gaxGetComponent<ModelComponent>().modRotate = glm::rotate(comOwner->gaxGetComponent<ModelComponent>().modRotate, glm::radians(-0.01f), glm::vec3(0, 0, 1));
 	}
 	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["ROT_LEFT"])) {
-		comOwner->gaxGetComponent<ModelComponent>().modRotate = glm::rotate(comOwner->gaxGetComponent<ModelComponent>().modRotate, glm::radians(0.1f), glm::vec3(0, 0, 1));
+		comOwner->gaxGetComponent<ModelComponent>().modRotate = glm::rotate(comOwner->gaxGetComponent<ModelComponent>().modRotate, glm::radians(0.01f), glm::vec3(0, 0, 1));
 	}
+	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["ROT_BACK"])) {
+		comOwner->gaxGetComponent<ModelComponent>().modRotate = glm::rotate(comOwner->gaxGetComponent<ModelComponent>().modRotate, glm::radians(0.01f), glm::vec3(0, 1, 0));
+	}
+	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["ROT_FRONT"])) {
+		comOwner->gaxGetComponent<ModelComponent>().modRotate = glm::rotate(comOwner->gaxGetComponent<ModelComponent>().modRotate, glm::radians(-0.01f), glm::vec3(0, 1, 0));
+	}
+
 	if (ctrlInputManager->inmIsKeyTriggered(ctrlProfile["TEXTURE_TOGGLE"]) ){
 		std::cout << "space pressed" << std::endl;
 		comOwner->gaxGetComponent<ModelComponent>().mode = (comOwner->gaxGetComponent<ModelComponent>().mode+1)%2;

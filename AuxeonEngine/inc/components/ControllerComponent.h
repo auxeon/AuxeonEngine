@@ -13,6 +13,7 @@
 // components
 #include "../inc/components/TransformComponent.h"
 #include "../inc/components/ModelComponent.h"
+#include "../inc/components/Model3DComponent.h"
 
 class ControllerComponent : public Component {
 

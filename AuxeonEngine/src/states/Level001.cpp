@@ -29,18 +29,18 @@ void Level001::stateInit() {
 	player1->gaxAddComponent<TransformComponent>(0.0f,0.0f,0.1f);
 	player1->gaxAddComponent<ControllerComponent>(1);
 	player1->gaxAddComponent<ModelComponent>("res/sprites/player1.bmp");
+	//player1->gaxAddComponent<Model3DComponent>("res/sprites/player1.bmp");
 
-	player2 = &stateGameObjectFactory->gofCreateObject();
-	player2->gaxAddComponent<TransformComponent>(0.0f,0.0f,0.1f);
-	player2->gaxAddComponent<ControllerComponent>(2);
-	player2->gaxAddComponent<ModelComponent>("res/sprites/player2.bmp");
-
-	//creating the wall
-	for (int i = 0; i < 10;++i) {
-		wall[i] = &stateGameObjectFactory->gofCreateObject();
-		wall[i]->gaxAddComponent<TransformComponent>(-1 + i*0.3f, -1.0f, 0.0f);
-		wall[i]->gaxAddComponent<ModelComponent>("res/textures/wall.jpg");
-	}
+	//player2 = &stateGameObjectFactory->gofCreateObject();
+	//player2->gaxAddComponent<TransformComponent>(0.0f,0.0f,0.1f);
+	//player2->gaxAddComponent<ControllerComponent>(2);
+	//player2->gaxAddComponent<ModelComponent>("res/models/cube_001.obj");
+	////creating the wall
+	//for (int i = 0; i < 10;++i) {
+	//	wall[i] = &stateGameObjectFactory->gofCreateObject();
+	//	wall[i]->gaxAddComponent<TransformComponent>(-1 + i*0.3f, -1.0f, 0.0f);
+	//	wall[i]->gaxAddComponent<ModelComponent>("res/models/cube_001.obj");
+	//}
 }
 
 void Level001::stateCleanup() {
@@ -77,7 +77,7 @@ void Level001::stateDraw() {
 	// show changes on the screen by calls the draw functions 
 	if (stateFrameRateManager->fpsGetDeltaTime() > stateFrameRateManager->fpsGetFrameTimeCap()) {
 		char fpsString[72];
-		sprintf_s(fpsString, "%.2f FPS - P1 : %f, %f - P2 : %f, %f", 1 / stateFrameRateManager->fpsGetDeltaTime(), player1->gaxGetComponent<TransformComponent>().txfPosition.x, player1->gaxGetComponent<TransformComponent>().txfPosition.y, player2->gaxGetComponent<TransformComponent>().txfPosition.x, player2->gaxGetComponent<TransformComponent>().txfPosition.y);
+		sprintf_s(fpsString, "%.2f FPS - P1 : %f, %f - P2 : %f, %f", 1 / stateFrameRateManager->fpsGetDeltaTime(), player1->gaxGetComponent<TransformComponent>().txfPosition.x, player1->gaxGetComponent<TransformComponent>().txfPosition.y, player1->gaxGetComponent<TransformComponent>().txfPosition.x, player1->gaxGetComponent<TransformComponent>().txfPosition.y);
 		//std::cout << "Frame Time : " << stateFrameRateManager->fpsGetDeltaTime() << std::endl;
 		stateGraphicsManager->gfxSetWindowTitle(fpsString);
 		
