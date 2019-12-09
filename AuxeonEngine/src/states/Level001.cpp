@@ -10,6 +10,8 @@ GameObject* player1 = NULL;
 GameObject* player2 = NULL;
 GameObject* cam01 = NULL;
 GameObject* wall[10] = { NULL };
+ColliderComponent<Box>* p1Box = NULL;
+ColliderComponent<Box>* p2Box = NULL;
 
 bool Level001::stateGetExists() {
 	return(stateGetInstantiated());
@@ -26,19 +28,25 @@ void Level001::stateInit() {
 
 	// create game objects and init them with values
 	player1 = &stateGameObjectFactory->gofCreateObject();
-	player1->gaxAddComponent<TransformComponent>(0.0f,0.0f,0.1f);
+	player1->gaxAddComponent<TransformComponent>(0.0f,0.0f,0.3f);
 	player1->gaxAddComponent<ControllerComponent>(1);
 	player1->gaxAddComponent<ModelComponent>("res/sprites/player1.bmp");
+	player1->gaxAddComponent<ColliderComponent<Box>>(vec3(0.0f, 0.0f, 0.0f), 0.3f, 0.3f, glm::mat4(1.0f));
 
 	player2 = &stateGameObjectFactory->gofCreateObject();
-	player2->gaxAddComponent<TransformComponent>(0.0f,0.0f,0.1f);
+	player2->gaxAddComponent<TransformComponent>(0.0f,0.0f,0.3f);
 	player2->gaxAddComponent<ControllerComponent>(2);
 	player2->gaxAddComponent<ModelComponent>("res/sprites/player2.bmp");
+	player2->gaxAddComponent<ColliderComponent<Box>>(vec3(0.0f,0.0f,0.0f), 0.3f, 0.3f, glm::mat4(1.0f));
+
+	p1Box = &player1->gaxGetComponent<ColliderComponent<Box>>();
+	p2Box = &player2->gaxGetComponent<ColliderComponent<Box>>();
 
 	//creating the wall
-	for (int i = 0; i < 3;++i) {
+	for (int i = 0; i < 1;++i) {
 		wall[i] = &stateGameObjectFactory->gofCreateObject();
-		wall[i]->gaxAddComponent<TransformComponent>(-1 + i*0.3f, -1.0f, 0.0f);
+		wall[i]->gaxAddComponent<TransformComponent>(0 + i*0.3f, -0.5f, 0.0f);
+		wall[i]->gaxAddComponent<ColliderComponent<Box>>(vec3(0.0f,0.0f,0.0f), 0.3f, 0.3f, glm::mat4(1.0f));
 		wall[i]->gaxAddComponent<ModelComponent>("res/textures/wall.jpg");
 	}
 }
@@ -77,7 +85,7 @@ void Level001::stateDraw() {
 	// show changes on the screen by calls the draw functions 
 	if (stateFrameRateManager->fpsGetDeltaTime() > stateFrameRateManager->fpsGetFrameTimeCap()) {
 		char fpsString[72];
-		sprintf_s(fpsString, "%.2f FPS - P1 : %f, %f - P2 : %f, %f", 1 / stateFrameRateManager->fpsGetDeltaTime(), player1->gaxGetComponent<TransformComponent>().txfPosition.x, player1->gaxGetComponent<TransformComponent>().txfPosition.y, player2->gaxGetComponent<TransformComponent>().txfPosition.x, player2->gaxGetComponent<TransformComponent>().txfPosition.y);
+		sprintf_s(fpsString, "%.2f FPS - P1 : %f, %f - P2 : %f, %f", 1 / stateFrameRateManager->fpsGetDeltaTime(), player1->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.x, player1->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.y, player2->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.x, player2->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.y);
 		//std::cout << "Frame Time : " << stateFrameRateManager->fpsGetDeltaTime() << std::endl;
 		stateGraphicsManager->gfxSetWindowTitle(fpsString);
 		
@@ -90,8 +98,21 @@ void Level001::stateDraw() {
 	}
 
 }
-
+int a = 0;
 void Level001::stateUpdate() {
+
+	//std::cout << "a : " << a++ << std::endl;
+	p2Box->collGenContact(*p1Box);
+
+	// printing transposed as glm treats column major
+	//for (int i = 0; i < 4;++i) {
+	//	for (int j = 0; j < 4;++j) {
+	//		std::cout<<player1->gaxGetComponent<TransformComponent>().txfTransform[j][i] << " ";
+	//	}
+	//	std::cout << std::endl;
+	//}
+
+	//std::cout << "wall[1] position: " << wall[1]->gaxGetComponent<TransformComponent>().txfPosition.x << ", " << wall[1]->gaxGetComponent<TransformComponent>().txfPosition.y << std::endl;
 
 	stateFrameRateManager->fpsUpdate();
 	

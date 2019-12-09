@@ -29,6 +29,7 @@ public:
 	mat4 txfRotMat;
 	mat4 txfTraMat;
 	mat4 txfScaMat;
+	mat4 txfTransform;
 
 	float txfMaxSpeed;
 	

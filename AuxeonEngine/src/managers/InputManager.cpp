@@ -116,7 +116,7 @@ bool InputManager::inmInit() {
 	profile2["RIGHT"] = SDL_SCANCODE_RIGHT;
 	profile2["ROT_RIGHT"] = SDL_SCANCODE_P;
 	profile2["ROT_LEFT"] = SDL_SCANCODE_I;
-	profile2["TEXTURE_TOGGLE"] = SDL_SCANCODE_SPACE;
+	//profile2["TEXTURE_TOGGLE"] = SDL_SCANCODE_SPACE;
 
 	std::cout << "InputManager : init" << std::endl;
 

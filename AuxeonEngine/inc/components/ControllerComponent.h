@@ -10,6 +10,7 @@
 // inputmanager
 #include "../inc/managers/InputManager.h"
 #include "../inc/managers/FrameRateManager.h"
+#include "../inc/managers/GraphicsManager.h"
 // components
 #include "../inc/components/TransformComponent.h"
 #include "../inc/components/ModelComponent.h"
@@ -20,6 +21,7 @@ public:
 
 	InputManager* ctrlInputManager;
 	FrameRateManager* ctrlFrameRateManager;
+	GraphicsManager* ctrlGraphicsManager;
 	InputMap ctrlProfile;
 
 	ControllerComponent(int inputProfile = 1);

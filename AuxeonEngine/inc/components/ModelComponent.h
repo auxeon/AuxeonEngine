@@ -33,9 +33,6 @@ public:
 
 	// mat4's
 	mat4 modTransform;
-	mat4 modTranslate;
-	mat4 modRotate;
-	mat4 modScale;
 
 	float vertices[32];
 	String modTexPath;

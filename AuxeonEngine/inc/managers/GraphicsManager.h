@@ -23,6 +23,7 @@ class GraphicsManager {
 public:
 	static const int gfxScreenWidth = SCREEN_WIDTH;
 	static const int gfxScreenHeight = SCREEN_HEIGHT;
+	bool gfxDebugDraw;
 
 	//OpenGL
 	SDL_GLContext gfxOpenGLContext;
@@ -33,6 +34,7 @@ private:
 	SDL_Window* gfxWindow;
 	SDL_Surface* gfxWindowSurface;
 	GameObjectMap gfxCamMap;
+	
 	
 	// functions
 public:

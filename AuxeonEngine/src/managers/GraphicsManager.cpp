@@ -20,7 +20,7 @@ bool GraphicsManager::gfxGetInstantiated() {
 	return(gfxInstantiated);
 }
 
-GraphicsManager::GraphicsManager() {
+GraphicsManager::GraphicsManager() : gfxDebugDraw(false){
 	gfxWindowSurface = NULL;
 	gfxInstantiated = gfxInit();
 	std::cout << "GraphicsManager : default constructed" << std::endl;
