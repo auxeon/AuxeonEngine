@@ -2,9 +2,8 @@
 
 #include <iostream>
 
-float PLAYERBLOCKSIZE = 100.0f;
-float WALLBLOCKSIZE = 50.0f;
-
+#define PBLOCKSIZE 80;
+#define WBLOCKSIZE 50;
 
 bool Level001::stateInstantiated = false;
 Level001* Level001::stateInstance = nullptr;
@@ -14,7 +13,8 @@ GameObject* player1 = NULL;
 GameObject* player2 = NULL;
 GameObject* cam01 = NULL;
 GameObject* wall[256] = { NULL };
-ColliderComponent<Box>* p1Box = NULL;
+GameObject* tiles[16][16] = { { NULL } };
+//ColliderComponent<Box>* p1Box = NULL;
 ColliderComponent<Box>* p2Box = NULL;
 
 bool Level001::stateGetExists() {
@@ -22,6 +22,10 @@ bool Level001::stateGetExists() {
 }
 
 void Level001::stateInit() {
+
+	float PLAYERBLOCKSIZE = PBLOCKSIZE;
+	float WALLBLOCKSIZE = WBLOCKSIZE;
+
 	std::cout << "Level001 : init\n";
 	// setting the FPS 
 	stateFrameRateManager->fpsSetFPS(60.0f);
@@ -36,32 +40,53 @@ void Level001::stateInit() {
 	player1->gaxAddComponent<ControllerComponent>(1);
 	player1->gaxAddComponent<ModelComponent>("res/sprites/player1.bmp", PLAYERBLOCKSIZE);
 	player1->gaxAddComponent<ColliderComponent<Box>>(vec3(0.0f, 0.0f, 0.0f), PLAYERBLOCKSIZE, PLAYERBLOCKSIZE, glm::mat4(1.0f));
+	player1->gaxAddComponent<PhysicsComponent>();
 
 	player2 = &stateGameObjectFactory->gofCreateObject();
 	player2->gaxAddComponent<TransformComponent>(200, 300, 0.3f);
 	player2->gaxAddComponent<ControllerComponent>(2);
 	player2->gaxAddComponent<ModelComponent>("res/sprites/player2.bmp", PLAYERBLOCKSIZE);
 	player2->gaxAddComponent<ColliderComponent<Box>>(vec3(0.0f, 0.0f, 0.0f), PLAYERBLOCKSIZE, PLAYERBLOCKSIZE, glm::mat4(1.0f));
+	player2->gaxAddComponent<PhysicsComponent>();
 
-	//creating the bottom wall
-	for (int h = 0; h < 5; ++h) {
-		for (int i = 0; i < 16; ++i) {
-			wall[i] = &stateGameObjectFactory->gofCreateObject();
-			wall[i]->gaxAddComponent<TransformComponent>(((0 + WALLBLOCKSIZE / 2) + i * (WALLBLOCKSIZE)), (200 - h*WALLBLOCKSIZE + WALLBLOCKSIZE / 2), 0);
-			//wall[i]->gaxAddComponent<ColliderComponent<Box>>(vec3(0.0f,0.0f,0.0f), 0.3f, 0.3f, glm::mat4(1.0f));
-			wall[i]->gaxAddComponent<ModelComponent>("res/textures/wall.jpg", WALLBLOCKSIZE);
+	////creating the bottom wall
+	//for (int h = 0; h < 5; ++h) {
+	//	for (int i = 0; i < 16; ++i) {
+	//		wall[i] = &stateGameObjectFactory->gofCreateObject();
+	//		wall[i]->gaxAddComponent<TransformComponent>(((0 + WALLBLOCKSIZE / 2) + i * (WALLBLOCKSIZE)), (200 - h*WALLBLOCKSIZE + WALLBLOCKSIZE / 2), 0);
+	//		//wall[i]->gaxAddComponent<ColliderComponent<Box>>(vec3(0.0f,0.0f,0.0f), 0.3f, 0.3f, glm::mat4(1.0f));
+	//		wall[i]->gaxAddComponent<ModelComponent>("res/textures/wall.jpg", WALLBLOCKSIZE);
+	//	}
+	//}
+
+	////creating the top wall
+	//for (int h = 0; h < 2; ++h) {
+	//	for (int i = 0; i < 8; ++i) {
+	//		wall[i] = &stateGameObjectFactory->gofCreateObject();
+	//		wall[i]->gaxAddComponent<TransformComponent>((200 + WALLBLOCKSIZE / 2) + i * (WALLBLOCKSIZE), (500 - h*WALLBLOCKSIZE + WALLBLOCKSIZE / 2), 0);
+	//		//wall[i]->gaxAddComponent<ColliderComponent<Box>>(vec3(0.0f,0.0f,0.0f), 0.3f, 0.3f, glm::mat4(1.0f));
+	//		wall[i]->gaxAddComponent<ModelComponent>("res/textures/wall.jpg", WALLBLOCKSIZE);
+	//	}
+	//}
+
+
+	int rows = stateTileMapManager->tmmRows;
+	int cols = stateTileMapManager->tmmCols;
+	int s = stateTileMapManager->tmmBlockSize;
+
+	for (int i = 0; i < rows;++i) {
+		for (int j = 0; j < cols; ++j) {
+			if (0 != stateTileMapManager->map[i][j]) {
+				vec2 pos = stateTileMapManager->tmmGetWorldPos(TilePair(i, j));
+				tiles[i][j] = &stateGameObjectFactory->gofCreateObject();
+				tiles[i][j]->gaxAddComponent<TransformComponent>(pos.x,pos.y,0);
+				tiles[i][j]->gaxAddComponent<ModelComponent>("res/textures/paper.bmp", WALLBLOCKSIZE);
+			}
 		}
 	}
+	
 
-	//creating the top wall
-	for (int h = 0; h < 2; ++h) {
-		for (int i = 0; i < 8; ++i) {
-			wall[i] = &stateGameObjectFactory->gofCreateObject();
-			wall[i]->gaxAddComponent<TransformComponent>((200 + WALLBLOCKSIZE / 2) + i * (WALLBLOCKSIZE), (500 - h*WALLBLOCKSIZE + WALLBLOCKSIZE / 2), 0);
-			//wall[i]->gaxAddComponent<ColliderComponent<Box>>(vec3(0.0f,0.0f,0.0f), 0.3f, 0.3f, glm::mat4(1.0f));
-			wall[i]->gaxAddComponent<ModelComponent>("res/textures/wall.jpg", WALLBLOCKSIZE);
-		}
-	}
+
 }
 
 void Level001::stateCleanup() {
@@ -98,11 +123,13 @@ void Level001::stateDraw() {
 	// show changes on the screen by calls the draw functions 
 	if (stateFrameRateManager->fpsGetDeltaTime() > stateFrameRateManager->fpsGetFrameTimeCap()) {
 		char fpsString[72];
-		sprintf_s(fpsString, "%.2f FPS - P1 : %f, %f - P2 : %f, %f", 1 / stateFrameRateManager->fpsGetDeltaTime(), player1->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.x, player1->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.y, player2->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.x, player2->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.y);
+		//sprintf_s(fpsString, "%.2f FPS - P1 : %f, %f - P2 : %f, %f", 1 / stateFrameRateManager->fpsGetDeltaTime(), player1->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.x, player1->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.y, player2->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.x, player2->gaxGetComponent<ColliderComponent<Box>>().collShape->boxCenterTransformed.y);
 		//std::cout << "Frame Time : " << stateFrameRateManager->fpsGetDeltaTime() << std::endl;
-		stateGraphicsManager->gfxSetWindowTitle(fpsString);
+		//stateGraphicsManager->gfxSetWindowTitle(fpsString);
 		
 		// all objects call draw 
+		stateTileMapManager->tmmDraw();
+		statePhysicsManager->physicsDraw();
 		stateGameObjectFactory->gofDraw();
 		// all managers call draw
 		stateInputManager->inmDraw();
@@ -111,35 +138,15 @@ void Level001::stateDraw() {
 	}
 
 }
-int a = 0;
+
 void Level001::stateUpdate() {
 
-	//std::cout << "a : " << a++ << std::endl;
-	//p2Box->collGenContact(*p1Box);
-
-	// printing transposed as glm treats column major
-	//for (int i = 0; i < 4;++i) {
-	//	for (int j = 0; j < 4;++j) {
-	//		std::cout<<player1->gaxGetComponent<TransformComponent>().txfTransform[j][i] << " ";
-	//	}
-	//	std::cout << std::endl;
-	//}
-
-	//std::cout << "wall[1] position: " << wall[1]->gaxGetComponent<TransformComponent>().txfPosition.x << ", " << wall[1]->gaxGetComponent<TransformComponent>().txfPosition.y << std::endl;
-
 	stateFrameRateManager->fpsUpdate();
+	statePhysicsManager->physicsUpdate(stateFrameRateManager->fpsGetDeltaTime());
 	stateCollisionManager->colmanUpdate();
-	
-	//if (player1->gaxIsActive() && player1->gaxComponentExists<TransformComponent>()) {
-	//	std::cout << "player1 pos : " << player1->gaxGetComponent<TransformComponent>().txfPosition.x << ", " << player1->gaxGetComponent<TransformComponent>().txfPosition.y << std::endl;
-	//}
-
-	//if (player2->gaxIsActive() && player2->gaxComponentExists<TransformComponent>()) {
-	//	std::cout << "player2 pos : " << player2->gaxGetComponent<TransformComponent>().txfPosition.x << ", " << player2->gaxGetComponent<TransformComponent>().txfPosition.y << std::endl;
-	//}
-
 	// all managers call update
 	stateResourceManager->resUpdate();
+	stateTileMapManager->tmmUpdate();
 	stateGraphicsManager->gfxUpdate();
 	stateInputManager->inmUpdate();
 	// for all objects call update 
@@ -184,6 +191,8 @@ Level001::Level001() : stateEvent({NULL}) {
 	stateResourceManager = ResourceManager::resCreate();
 	stateGameObjectFactory = GameObjectFactory::gofCreate();
 	stateCollisionManager = CollisionManager::colmanCreate();
+	statePhysicsManager = PhysicsManager::physicsCreate();
+	stateTileMapManager = TileMapManager::tmmCreate();
 
 	std::cout << "Level001 : default constructed\n";
 
@@ -217,6 +226,16 @@ Level001::Level001() : stateEvent({NULL}) {
 		std::cout << "Level001 : stateCollisionManager instantiation error\n";
 		stateGameStateManager->gsmQuit();
 	}
+
+	if (!stateTileMapManager) {
+		std::cout << "Level001 : stateTileMapManager instantiation error\n";
+		stateGameStateManager->gsmQuit();
+	}
+
+	if (!statePhysicsManager) {
+		std::cout << "Level001 : statePhysicsManager instantiation error\n";
+		stateGameStateManager->gsmQuit();
+	}
 }
 
 // Default destructor
@@ -226,5 +245,8 @@ Level001::~Level001() {
 	stateInputManager->inmDestroy();
 	stateGraphicsManager->gfxDestroy();
 	stateFrameRateManager->fpsDestroy();
+	stateCollisionManager->colmanDestroy();
+	statePhysicsManager->physicsDestroy();
+	stateTileMapManager->tmmDestroy();
 	std::cout << "Level001 : default destructed\n";
 }

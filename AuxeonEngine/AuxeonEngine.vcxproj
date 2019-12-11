@@ -187,6 +187,7 @@
     <ClCompile Include="src\managers\PhysicsManager.cpp" />
     <ClCompile Include="src\managers\ResourceManager.cpp" />
     <ClCompile Include="src\managers\StateManager.cpp" />
+    <ClCompile Include="src\managers\TileMapManager.cpp" />
     <ClCompile Include="src\states\Level001.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +212,7 @@
     <ClInclude Include="inc\managers\PhysicsManager.h" />
     <ClInclude Include="inc\managers\ResourceManager.h" />
     <ClInclude Include="inc\managers\StateManager.h" />
+    <ClInclude Include="inc\managers\TileMapManager.h" />
     <ClInclude Include="inc\states\Level001.h" />
     <ClInclude Include="inc\factories\GameObjectFactory.h" />
     <ClInclude Include="libs\GLAD-OPENGL-4.6\glad\include\glad\glad.h" />

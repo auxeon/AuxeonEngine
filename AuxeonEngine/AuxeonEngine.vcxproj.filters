@@ -87,6 +87,9 @@
     <ClCompile Include="src\components\StateMachineComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\managers\TileMapManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\states\Level001.h">
@@ -1140,6 +1143,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\components\StateMachineComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\managers\TileMapManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
