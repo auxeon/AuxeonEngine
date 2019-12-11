@@ -34,7 +34,7 @@ void CollisionTypes::SphereOBBCollide(Sphere* a, Box* b) {
 // Box class implementations
 Box::Box(vec3 _center, float32 _x_size, float32 _y_size, mat4 _mat) : boxCenter(_center), boxCenterTransformed(_center), boxSizeX(_x_size), boxSizeY(_y_size), boxTransform(_mat) {
 	this->shapeID = getShapeType<Box>();
-	
+
 	boxVerticesOriginal.push_back(vec3((_x_size / 2.0f), (_y_size / 2.0f), 0.0f));
 	boxVerticesOriginal.push_back(vec3((_x_size / 2.0f), (-_y_size / 2.0f), 0.0f));
 	boxVerticesOriginal.push_back(vec3((-_x_size / 2.0f), (-_y_size / 2.0f), 0.0f));
@@ -43,12 +43,12 @@ Box::Box(vec3 _center, float32 _x_size, float32 _y_size, mat4 _mat) : boxCenter(
 	//	std::cout <<"x : "<< v.x<<", y : "<<v.y<<", z : " <<v.z;
 	//	std::cout << std::endl;
 	//}
-	std::cout<<std::endl;
+	std::cout << std::endl;
 	boxVerticesTransformed = boxVerticesOriginal;
 	boxSizeX = _x_size;
 	boxSizeY = _y_size;
 	boxSizeZ = 0.0f;
-	
+
 }
 
 Box::~Box() {
@@ -74,7 +74,7 @@ void Box::shapeSetVertices(vec3vec _vertices) {
 
 void Box::shapeSetTransform(mat4 _mat) {
 	boxTransform = _mat;
-	boxCenterTransformed = vec3(_mat * vec4(boxCenter,1.0f));
+	boxCenterTransformed = vec3(_mat * vec4(boxCenter, 1.0f));
 	if (!boxVerticesOriginal.empty()) {
 		// transforming vertices
 		for (int i = 0; i < boxVerticesOriginal.size(); ++i) {
@@ -124,8 +124,8 @@ void ColliderComponent<Box>::comDraw() {
 
 	float32 vertices[32];
 
-	vertices[0]  = collShape->boxVerticesOriginal[0][0]; vertices[1]  = collShape->boxVerticesOriginal[0][1]; vertices[2]  = collShape->boxVerticesOriginal[0][2]; vertices[3]  = 0.0f; vertices[4]  = 1.0f; vertices[5]  = 0.0f; // top right
-	vertices[8]  = collShape->boxVerticesOriginal[1][0]; vertices[9]  = collShape->boxVerticesOriginal[1][1]; vertices[10] = collShape->boxVerticesOriginal[1][2]; vertices[11] = 0.0f; vertices[12] = 1.0f; vertices[13] = 0.0f; // bottom right
+	vertices[0] = collShape->boxVerticesOriginal[0][0]; vertices[1] = collShape->boxVerticesOriginal[0][1]; vertices[2] = collShape->boxVerticesOriginal[0][2]; vertices[3] = 0.0f; vertices[4] = 1.0f; vertices[5] = 0.0f; // top right
+	vertices[8] = collShape->boxVerticesOriginal[1][0]; vertices[9] = collShape->boxVerticesOriginal[1][1]; vertices[10] = collShape->boxVerticesOriginal[1][2]; vertices[11] = 0.0f; vertices[12] = 1.0f; vertices[13] = 0.0f; // bottom right
 	vertices[16] = collShape->boxVerticesOriginal[2][0]; vertices[17] = collShape->boxVerticesOriginal[2][1]; vertices[18] = collShape->boxVerticesOriginal[2][2]; vertices[19] = 0.0f; vertices[20] = 1.0f; vertices[21] = 0.0f; // bottom left
 	vertices[24] = collShape->boxVerticesOriginal[3][0]; vertices[25] = collShape->boxVerticesOriginal[3][1]; vertices[26] = collShape->boxVerticesOriginal[3][2]; vertices[27] = 0.0f; vertices[28] = 1.0f; vertices[29] = 0.0f; // top left 
 
@@ -167,25 +167,28 @@ void ColliderComponent<Box>::comDraw() {
 	glBindVertexArray(0);
 
 
-
-	if (!collGraphicsManager->gfxDebugDraw) {
-
-
-	}
-
-	else if (collGraphicsManager->gfxDebugDraw) {
+	if (collGraphicsManager->gfxDebugDraw) {
 
 
 		// render the triangle
 		collShader->use();
 
-		
-		
 		int loc = glGetUniformLocation(collShader->ID, "model");
 		glUniformMatrix4fv(loc, 1, GL_FALSE, &collShape->boxTransform[0][0]);
 
+		mat4 view = collGraphicsManager->gfxActiveCamera->gaxGetComponent<CameraComponent>().camGetViewMatrix();
+		loc = glGetUniformLocation(collShader->ID,"view");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &view[0][0]);
+
+		mat4 proj = collGraphicsManager->gfxActiveCamera->gaxGetComponent<CameraComponent>().camGetProjMatrix();
+		loc = glGetUniformLocation(collShader->ID, "proj");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &proj[0][0]);
+
 		loc = glGetUniformLocation(collShader->ID, "mode");
 		glUniform1i(loc, 1);
+
+		loc = glGetUniformLocation(collShader->ID,"debugDrawColor");
+		glUniform3fv(loc, 1, &comOwner->gaxDebugDrawColor[0]);
 
 		glBindVertexArray(VAO);
 
@@ -205,7 +208,7 @@ void ColliderComponent<T>::comHandleEvents() {
 
 // specializaions 
 void ColliderComponent<Box>::comInit() {
-	
+
 	// for 3d stuff - do later if time permits
 	//collShape->boxNormsOriginal.push_back(comOwner->gaxGetComponent<TransformComponent>().txfUpVec);
 	//collShape->boxNormsOriginal.push_back(comOwner->gaxGetComponent<TransformComponent>().txfRightVec);
@@ -241,14 +244,39 @@ ColliderComponent<T>::~ColliderComponent() {
 	delete collShader;
 }
 
-void ColliderComponent<Box>::collGenContact(ColliderComponent& rb) {
+bool ColliderComponent<Box>::collGenContact(ColliderComponent<Box>& rb) {
 	if (CollisionTypes::AABBCollide(this->collShape, rb.collShape)) {
-		std::cout << "Collision Component : Collision\n";
+		//std::cout << "Collision !\n";
+		return true;
 	}
 	else {
-		std::cout << "Collision Component : No Collision\n";
+		//std::cout << "No Collision !\n";
+		return false;
 	}
+	
 }
+
+bool ColliderComponent<Box>::collGenContact(ColliderComponent<Sphere>& rb) {
+	//if (CollisionTypes::AABBCollide(this->collShape, rb.collShape)) {
+	//	return true;
+	//}
+	return false;
+}
+
+bool ColliderComponent<Sphere>::collGenContact(ColliderComponent<Box>& rb) {
+	//if (CollisionTypes::AABBCollide(this->collShape, rb.collShape)) {
+	//	return true;
+	//}
+	return false;
+}
+
+bool ColliderComponent<Sphere>::collGenContact(ColliderComponent<Sphere>& rb) {
+	//if (CollisionTypes::AABBCollide(this->collShape, rb.collShape)) {
+	//	return true;
+	//}
+	return false;
+}
+
 
 
 //helpers
@@ -264,24 +292,24 @@ bool getCollision(const Box& box1, const Box& box2)
 		getSeparatingPlane(RPos, box2.boxNormsTransformed[0], box1, box2) ||
 		getSeparatingPlane(RPos, box2.boxNormsTransformed[1], box1, box2) ||
 		getSeparatingPlane(RPos, box2.boxNormsTransformed[2], box1, box2) ||
-		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[0],box2.boxNormsTransformed[0]), box1, box2) ||
-		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[0],box2.boxNormsTransformed[1]), box1, box2) ||
-		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[0],box2.boxNormsTransformed[2]), box1, box2) ||
-		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[1],box2.boxNormsTransformed[0]), box1, box2) ||
-		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[1],box2.boxNormsTransformed[1]), box1, box2) ||
-		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[1],box2.boxNormsTransformed[2]), box1, box2) ||
-		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[2],box2.boxNormsTransformed[0]), box1, box2) ||
-		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[2],box2.boxNormsTransformed[1]), box1, box2) ||
-		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[2],box2.boxNormsTransformed[2]), box1, box2));
+		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[0], box2.boxNormsTransformed[0]), box1, box2) ||
+		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[0], box2.boxNormsTransformed[1]), box1, box2) ||
+		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[0], box2.boxNormsTransformed[2]), box1, box2) ||
+		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[1], box2.boxNormsTransformed[0]), box1, box2) ||
+		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[1], box2.boxNormsTransformed[1]), box1, box2) ||
+		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[1], box2.boxNormsTransformed[2]), box1, box2) ||
+		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[2], box2.boxNormsTransformed[0]), box1, box2) ||
+		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[2], box2.boxNormsTransformed[1]), box1, box2) ||
+		getSeparatingPlane(RPos, glm::cross(box1.boxNormsTransformed[2], box2.boxNormsTransformed[2]), box1, box2));
 }
 
 bool getSeparatingPlane(const vec3& RPos, const vec3& Plane, const Box& box1, const Box& box2)
 {
-	return (fabs(glm::dot(RPos,Plane)) >
-		(fabs(glm::dot((box1.boxNormsTransformed[0]*box1.boxSizeX/2.0f),Plane)) +
-			fabs(glm::dot((box1.boxNormsTransformed[1] * box1.boxSizeY/2.0f),Plane)) +
-			fabs(glm::dot((box1.boxNormsTransformed[2] * box1.boxSizeZ/2.0f),Plane)) +
-			fabs(glm::dot((box2.boxNormsTransformed[0] * box2.boxSizeX/2.0f),Plane)) +
-			fabs(glm::dot((box2.boxNormsTransformed[1] * box2.boxSizeY/2.0f),Plane)) +
-			fabs(glm::dot((box2.boxNormsTransformed[2] * box2.boxSizeZ/2.0f),Plane))));
+	return (fabs(glm::dot(RPos, Plane)) >
+		(fabs(glm::dot((box1.boxNormsTransformed[0] * box1.boxSizeX / 2.0f), Plane)) +
+			fabs(glm::dot((box1.boxNormsTransformed[1] * box1.boxSizeY / 2.0f), Plane)) +
+			fabs(glm::dot((box1.boxNormsTransformed[2] * box1.boxSizeZ / 2.0f), Plane)) +
+			fabs(glm::dot((box2.boxNormsTransformed[0] * box2.boxSizeX / 2.0f), Plane)) +
+			fabs(glm::dot((box2.boxNormsTransformed[1] * box2.boxSizeY / 2.0f), Plane)) +
+			fabs(glm::dot((box2.boxNormsTransformed[2] * box2.boxSizeZ / 2.0f), Plane))));
 }

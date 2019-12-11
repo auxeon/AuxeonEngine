@@ -22,8 +22,10 @@ inline GameObjectID getGameObjectID() {
 
 class GameObjectFactory
 {
-
 public:
+	GameObjectMap gofGameObjects;
+public:
+
 	static GameObjectFactory* gofCreate();
 	static void gofInit();
 	static bool gofGetInstantiated();
@@ -45,7 +47,7 @@ private:
 	static GameObjectFactory* gofInstance;
 	static bool gofInstantiated;
 
-	GameObjectMap gofGameObjects;
+	
 
 };
 

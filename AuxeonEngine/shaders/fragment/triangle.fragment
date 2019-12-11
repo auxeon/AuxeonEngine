@@ -6,6 +6,7 @@ in vec2 TexCoord;
 
 uniform sampler2D moTexID;
 uniform int mode;
+uniform vec3 debugDrawColor;
 
 void main(){
 	
@@ -14,6 +15,6 @@ void main(){
 		//FragColor = vec4(0,1,0,1.0);
 	}
 	else{
-		FragColor = vec4(ourColor,1.0f);
+		FragColor = vec4(debugDrawColor,1.0f);
 	}
 }

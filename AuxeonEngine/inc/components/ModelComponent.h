@@ -43,9 +43,10 @@ public:
 	int modChannels;
 	unsigned char* data;
 	int mode;
+	float32 modSize;
 
 public:
-	ModelComponent(String modTexPath = "res/textures/wall.jpg");
+	ModelComponent(String modTexPath = "res/textures/wall.jpg", float32 _modSize=32.0f);
 	~ModelComponent();
 	void comInit();
 	void comHandleEvents();

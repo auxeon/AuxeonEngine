@@ -23,14 +23,15 @@ using vec3 = glm::vec3;
 using float32 = glm::float32;
 using ShapeID = std::size_t;
 using vec3 = glm::vec3;
-using ContactMap = std::unordered_map<int, GameObject*>;
+//using ContactMap = std::unordered_map<int, GameObject*>;
 using vec3vec = std::vector<vec3>;
 using mat4 = glm::mat4;
 
 
 // forward declare all shape type classes here 
-class Box;
 class Sphere;
+class Box;
+
 
 class Contact {
 	std::pair<GameObject*, GameObject*> goPair;
@@ -59,17 +60,24 @@ ComponentID getShapeType() {
 
 class Shape {
 public:
-	virtual void shapeSetVertices(vec3vec _vertices)=0;
-	virtual vec3vec shapeGetVertices()=0;
-	virtual void shapeSetTransform(mat4 _mat)=0;
-	virtual mat4 shapeGetTransform()=0;
-	virtual void shapeAccept(Box* _b)=0;
+	virtual void shapeSetVertices(vec3vec _vertices) = 0;
+	virtual vec3vec shapeGetVertices() = 0;
+	virtual void shapeSetTransform(mat4 _mat) = 0;
+	virtual mat4 shapeGetTransform() = 0;
+	virtual void shapeAccept(Box* _b) = 0;
 	virtual void shapeAccept(Sphere* _b) = 0;
 };
 
-class Box : Shape {
+class Sphere : public Shape {
+	int a;
+};
+
+
+
+class Box : public Shape {
 
 public:
+
 	ShapeID shapeID;
 	float32 boxSizeX;
 	float32 boxSizeY;
@@ -77,7 +85,7 @@ public:
 
 	vec3vec boxVerticesOriginal;
 	vec3vec boxVerticesTransformed;
-	
+
 	vec3vec boxNormsOriginal;
 	vec3vec boxNormsTransformed;
 
@@ -101,7 +109,7 @@ public:
 };
 
 template <typename T>
-class ColliderComponent : public Component{
+class ColliderComponent : public Component {
 
 public:
 
@@ -114,12 +122,14 @@ public:
 	void comHandleEvents();
 	void comUpdate();
 
-	void collGenContact(ColliderComponent& rb);
+	bool collGenContact(ColliderComponent<Box>& rb);
+	bool collGenContact(ColliderComponent<Sphere>& rb);
 
 public:
 	T* collShape;
 	GraphicsManager* collGraphicsManager;
 	Shader* collShader;
+	vec3 collDebugDrawColor;
 
 };
 

@@ -39,6 +39,7 @@ class GameObject
 public:
 	bool gaxDebugDraw;
 	GameObjectID gaxID;
+	vec3 gaxDebugDrawColor;
 
 public:
 

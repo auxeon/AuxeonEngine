@@ -2,6 +2,7 @@
 
 GraphicsManager* GraphicsManager::gfxInstance = NULL;
 bool GraphicsManager::gfxInstantiated = false;
+GameObject* GraphicsManager::gfxActiveCamera = NULL;
 
 GraphicsManager* GraphicsManager::gfxCreate() {
 	if (NULL == gfxInstance) {
@@ -20,9 +21,10 @@ bool GraphicsManager::gfxGetInstantiated() {
 	return(gfxInstantiated);
 }
 
-GraphicsManager::GraphicsManager() : gfxDebugDraw(false){
+GraphicsManager::GraphicsManager() : gfxDebugDraw(false) {
 	gfxWindowSurface = NULL;
 	gfxInstantiated = gfxInit();
+	gfxDebugDrawColor = vec3(0.0f,1.0f,0.0f);
 	std::cout << "GraphicsManager : default constructed" << std::endl;
 }
 
@@ -54,8 +56,8 @@ bool GraphicsManager::gfxInit() {
 	}
 
 	// set opengl version flags
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,6);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
 
 	// setting the core profile doesn't allow us to use older deprecated functions 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -64,15 +66,16 @@ bool GraphicsManager::gfxInit() {
 	// creating the main sdl opengl context now
 	gfxOpenGLContext = SDL_GL_CreateContext(gfxWindow);
 
+
 	gfxWindowSurface = SDL_GetWindowSurface(gfxWindow);
 
 	// use glad loader to gain access to openGL calls - needed on windows only 
-	#ifdef _WIN32
+#ifdef _WIN32
 	gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
-	#endif
+#endif
 
 	// let's print out the OpenGL version info 
-	std::cout <<"GraphicsManager : gfxInit : OpenGL Version "<< (char*)glGetString(GL_VERSION)<<std::endl;
+	std::cout << "GraphicsManager : gfxInit : OpenGL Version " << (char*)glGetString(GL_VERSION) << std::endl;
 
 	return(true);
 }
@@ -102,6 +105,7 @@ void GraphicsManager::gfxUpdate() {
 
 void GraphicsManager::gfxAddCam(GameObjectIDPair cam) {
 	gfxCamMap.insert(cam);
+	gfxActiveCamera = cam.second;
 	std::cout << "GraphicsManager : Camera inserted : " << cam.first << std::endl;
 }
 

@@ -2,7 +2,7 @@
 
 // comOwner is not available here 
 
-ModelComponent::ModelComponent(String _modTexPath) : modTexPath(_modTexPath){
+ModelComponent::ModelComponent(String _modTexPath, float32 _modSize) : modTexPath(_modTexPath),modSize(_modSize){
 
 	modShader = new Shader("shaders/vertex/triangle.vertex", "shaders/fragment/triangle.fragment");
 	modGraphicsManager = GraphicsManager::gfxCreate();
@@ -19,16 +19,14 @@ ModelComponent::~ModelComponent() {
 	delete modShader;
 }
 
-float sprHeight = 0.3f;
-float sprWidth = 0.3f;
 
 // comOwner Available here on 
 void ModelComponent::comInit() {
 
-	vertices[0]  = (0.0f + sprWidth / 2.0f); vertices[1]  = (0.0f + sprHeight / 2.0f); vertices[2]  = 0.0f; vertices[3] = 0.0f; vertices[4] = 1.0f; vertices[5] = 0.0f; vertices[6] = 1.0f; vertices[7] = 1.0f;// top right
-	vertices[8]  = (0.0f + sprWidth / 2.0f); vertices[9]  = (0.0f - sprHeight / 2.0f); vertices[10] = 0.0f; vertices[11] = 0.0f; vertices[12] = 1.0f; vertices[13] = 0.0f; vertices[14] = 1.0f; vertices[15] = 0.0f;// bottom right
-	vertices[16] = (0.0f - sprWidth / 2.0f); vertices[17] = (0.0f - sprHeight / 2.0f); vertices[18] = 0.0f; vertices[19] = 0.0f; vertices[20] = 1.0f; vertices[21] = 0.0f; vertices[22] = 0.0f; vertices[23] = 0.0f;// bottom left
-	vertices[24] = (0.0f - sprWidth / 2.0f); vertices[25] = (0.0f + sprHeight / 2.0f); vertices[26] = 0.0f; vertices[27] = 0.0f; vertices[28] = 1.0f; vertices[29] = 0.0f; vertices[30] = 0.0f; vertices[31] = 1.0f;// top left 
+	vertices[0]  = (0.0f + modSize / 2.0f); vertices[1]  = (0.0f + modSize / 2.0f); vertices[2]  = 0.0f; vertices[3] = 0.0f; vertices[4] = 1.0f; vertices[5] = 0.0f; vertices[6] = 1.0f; vertices[7] = 1.0f;// top right
+	vertices[8]  = (0.0f + modSize / 2.0f); vertices[9]  = (0.0f - modSize / 2.0f); vertices[10] = 0.0f; vertices[11] = 0.0f; vertices[12] = 1.0f; vertices[13] = 0.0f; vertices[14] = 1.0f; vertices[15] = 0.0f;// bottom right
+	vertices[16] = (0.0f - modSize / 2.0f); vertices[17] = (0.0f - modSize / 2.0f); vertices[18] = 0.0f; vertices[19] = 0.0f; vertices[20] = 1.0f; vertices[21] = 0.0f; vertices[22] = 0.0f; vertices[23] = 0.0f;// bottom left
+	vertices[24] = (0.0f - modSize / 2.0f); vertices[25] = (0.0f + modSize / 2.0f); vertices[26] = 0.0f; vertices[27] = 0.0f; vertices[28] = 1.0f; vertices[29] = 0.0f; vertices[30] = 0.0f; vertices[31] = 1.0f;// top left 
 
 	//for (int i = 0; i < 4; ++i) {
 	//	for (int j = 0; j < 4; ++j) {
@@ -131,6 +129,14 @@ void ModelComponent::comDraw() {
 		int loc = glGetUniformLocation(modShader->ID, "model");
 		glUniformMatrix4fv(loc, 1, GL_FALSE, &modTransform[0][0]);
 
+		mat4 view = modGraphicsManager->gfxActiveCamera->gaxGetComponent<CameraComponent>().camGetViewMatrix();
+		loc = glGetUniformLocation(modShader->ID, "view");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &view[0][0]);
+
+		mat4 proj = modGraphicsManager->gfxActiveCamera->gaxGetComponent<CameraComponent>().camGetProjMatrix();
+		loc = glGetUniformLocation(modShader->ID, "proj");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &proj[0][0]);
+
 		loc = glGetUniformLocation(modShader->ID, "mode");
 		glUniform1i(loc, 0);
 
@@ -153,6 +159,14 @@ void ModelComponent::comDraw() {
 		int loc = glGetUniformLocation(modShader->ID, "model");
 		glUniformMatrix4fv(loc, 1, GL_FALSE, &modTransform[0][0]);
 
+		mat4 view = modGraphicsManager->gfxActiveCamera->gaxGetComponent<CameraComponent>().camGetViewMatrix();
+		loc = glGetUniformLocation(modShader->ID, "view");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &view[0][0]);
+
+		mat4 proj = modGraphicsManager->gfxActiveCamera->gaxGetComponent<CameraComponent>().camGetProjMatrix();
+		loc = glGetUniformLocation(modShader->ID, "proj");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &proj[0][0]);
+
 		loc = glGetUniformLocation(modShader->ID, "mode");
 		glUniform1i(loc, 0);
 
@@ -166,6 +180,11 @@ void ModelComponent::comDraw() {
 
 		loc = glGetUniformLocation(modShader->ID, "mode");
 		glUniform1i(loc, 1);
+
+		vec3 drawColor = comOwner->gaxDebugDrawColor;
+
+		loc = glGetUniformLocation(modShader->ID, "debugDrawColor");
+		glUniform3fv(loc, 1, &drawColor[0]);
 
 		glBindVertexArray(VAO);
 

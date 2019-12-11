@@ -11,6 +11,7 @@
 #include "../inc/managers/GraphicsManager.h"
 #include "../inc/managers/InputManager.h"
 #include "../inc/managers/FrameRateManager.h"
+#include "../inc/managers/CollisionManager.h"
 
 // factory includes
 #include "../inc/factories/GameObjectFactory.h"
@@ -66,6 +67,7 @@ private:
 	InputManager* stateInputManager;
 	ResourceManager* stateResourceManager;
 	FrameRateManager* stateFrameRateManager;
+	CollisionManager* stateCollisionManager;
 
 	// GameObjects
 	GameObjectFactory* stateGameObjectFactory;
