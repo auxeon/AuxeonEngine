@@ -14,8 +14,6 @@ TransformComponent::TransformComponent() {
 
 	txfRotMat = txfScaMat = txfTransform = glm::mat4(1.0f);
 	
-	
-	
 }
 
 TransformComponent::TransformComponent(float x, float y, float max_speed){
@@ -46,6 +44,9 @@ void TransformComponent::comDraw() {
 }
 
 void TransformComponent::comUpdate() {
+
+
+	txfTraMat = glm::translate(glm::mat4(1.0f), txfPosition);
 
 	// A mult B
 	// B*A

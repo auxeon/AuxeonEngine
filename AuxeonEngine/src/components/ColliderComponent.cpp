@@ -19,6 +19,7 @@ bool CollisionTypes::AABBCollide(Box* a, Box* b) {
 	if (
 		a->boxCenterTransformed.x + a->boxSizeX / 2.0f >= b->boxCenterTransformed.x - b->boxSizeX / 2.0f &&
 		b->boxCenterTransformed.x + b->boxSizeX / 2.0f >= a->boxCenterTransformed.x - a->boxSizeX / 2.0f &&
+
 		a->boxCenterTransformed.y + a->boxSizeY / 2.0f >= b->boxCenterTransformed.y - b->boxSizeY / 2.0f &&
 		b->boxCenterTransformed.y + b->boxSizeY / 2.0f >= a->boxCenterTransformed.y - a->boxSizeY / 2.0f
 		) {

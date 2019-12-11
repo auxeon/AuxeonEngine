@@ -101,9 +101,9 @@ void GameObjectFactory::gofEraseAllObjects() {
 	
 }
 
-GameObject& GameObjectFactory::gofCreateObject() {
+GameObject& GameObjectFactory::gofCreateObject(bool iswall) {
 	GameObjectID id = getGameObjectID();
-	GameObject* go = new GameObject(id,true);
+	GameObject* go = new GameObject(id,true,iswall);
 	gofGameObjects.insert(std::make_pair(id, (GameObject*)go));
 	return(*go);
 }

@@ -57,16 +57,25 @@ void CollisionManager::colmanUpdate() {
 					if (go1->gaxComponentExists<ColliderComponent<Box>>() && go2->gaxComponentExists<ColliderComponent<Box>>()) {
 						if (colmanContactCheckCollide(go1, go2)) {
 							// draw red box
-							go1->gaxDebugDrawColor = vec3(1.0f, 0.0f, 0.0f);
-							go2->gaxDebugDrawColor = vec3(1.0f, 0.0f, 0.0f);
+							if (!go1->gaxIsWall) {
+								go1->gaxDebugDrawColor = vec3(1.0f, 0.0f, 0.0f);
+							}
+							if (!go2->gaxIsWall) {
+								go2->gaxDebugDrawColor = vec3(1.0f, 0.0f, 0.0f);
+							}
 
 							// add to contact map
 							colmanCreateContact(go1, go2);
 						}
 						else {
 							// draw green box
-							go1->gaxDebugDrawColor = vec3(0.0f, 1.0f, 0.0f);
-							go2->gaxDebugDrawColor = vec3(0.0f, 1.0f, 0.0f);
+							if (!go1->gaxIsWall) {
+								go1->gaxDebugDrawColor = vec3(0.0f, 1.0f, 0.0f);
+							}
+							if (!go2->gaxIsWall) {
+								go2->gaxDebugDrawColor = vec3(0.0f, 1.0f, 0.0f);
+							}
+
 						}
 					}
 			}

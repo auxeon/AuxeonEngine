@@ -18,6 +18,7 @@
 // managers
 #include "../inc/managers/CollisionManager.h"
 #include "../inc/managers/FrameRateManager.h"
+#include "../inc/managers/TileMapManager.h"
 
 
 using StateID = int;
@@ -68,6 +69,7 @@ public:
 	// managers
 	FrameRateManager* phyFrameRateManager;
 	CollisionManager* phyCollisionManager;
+	TileMapManager* phyTileMapManager;
 };
 
 #endif 

@@ -10,7 +10,7 @@ void GameObject::gaxDestroy() {
 }
 
 // Assumption is that you can't create any object with out a position.
-GameObject::GameObject(GameObjectID id, bool active) : gaxDebugDraw(false), gaxActive(active), gaxParent(NULL), gaxID(id){
+GameObject::GameObject(GameObjectID id, bool active, bool iswall) : gaxDebugDraw(false), gaxActive(active), gaxIsWall(iswall), gaxParent(NULL), gaxID(id){
 	gaxDebugDrawColor = vec3(1.0f,1.0f,0.0f);
 	std::cout << "GameObject : " << this << " created\n";
 }

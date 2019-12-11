@@ -72,28 +72,42 @@ void ControllerComponent::comUpdate() {
 	float dt = ctrlFrameRateManager->fpsGetDeltaTime();
 
 	// movement controls 
+
+	if (ctrlInputManager->inmIsKeyTriggered(ctrlProfile["JUMP"])) {
+		//comOwner->gaxGetComponent<TransformComponent>().txfPosition.y += dt*speed;
+		//comOwner->gaxGetComponent<TransformComponent>().txfTraMat = glm::translate(comOwner->gaxGetComponent<TransformComponent>().txfTraMat, glm::vec3(0, dt*speed, 0));
+		comOwner->gaxGetComponent<PhysicsComponent>().phyCurrForce.y = 100.0f;
+	}
 	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["UP"])) {
-		comOwner->gaxGetComponent<TransformComponent>().txfPosition.y += dt*speed;
-		comOwner->gaxGetComponent<TransformComponent>().txfTraMat = glm::translate(comOwner->gaxGetComponent<TransformComponent>().txfTraMat, glm::vec3(0, dt*speed, 0));
+		//comOwner->gaxGetComponent<TransformComponent>().txfPosition.y += dt*speed;
+		//comOwner->gaxGetComponent<TransformComponent>().txfTraMat = glm::translate(comOwner->gaxGetComponent<TransformComponent>().txfTraMat, glm::vec3(0, dt*speed, 0));
+		comOwner->gaxGetComponent<PhysicsComponent>().phyCurrVel.y = 100.0f;
 	}
-	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["DOWN"])) {
-		comOwner->gaxGetComponent<TransformComponent>().txfPosition.y -= dt*speed;
-		comOwner->gaxGetComponent<TransformComponent>().txfTraMat = glm::translate(comOwner->gaxGetComponent<TransformComponent>().txfTraMat, glm::vec3(0, -dt*speed, 0));
+	else if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["DOWN"])) {
+		//comOwner->gaxGetComponent<TransformComponent>().txfPosition.y -= dt*speed;
+		//comOwner->gaxGetComponent<TransformComponent>().txfTraMat = glm::translate(comOwner->gaxGetComponent<TransformComponent>().txfTraMat, glm::vec3(0, -dt*speed, 0));
+		comOwner->gaxGetComponent<PhysicsComponent>().phyCurrVel.y = -100.0f;
 	}
+
 	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["RUN_LEFT"])) {
-		comOwner->gaxGetComponent<TransformComponent>().txfPosition.x -= dt*speed;
-		comOwner->gaxGetComponent<TransformComponent>().txfTraMat = glm::translate(comOwner->gaxGetComponent<TransformComponent>().txfTraMat, glm::vec3(-dt*speed, 0, 0));
+		//comOwner->gaxGetComponent<TransformComponent>().txfPosition.x -= dt*speed;
+		//comOwner->gaxGetComponent<TransformComponent>().txfTraMat = glm::translate(comOwner->gaxGetComponent<TransformComponent>().txfTraMat, glm::vec3(-dt*speed, 0, 0));
+		comOwner->gaxGetComponent<PhysicsComponent>().phyCurrVel.x = -100.0f;
 	}
-	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["RUN_RIGHT"])) {
-		comOwner->gaxGetComponent<TransformComponent>().txfPosition.x += dt*speed;
-		comOwner->gaxGetComponent<TransformComponent>().txfTraMat = glm::translate(comOwner->gaxGetComponent<TransformComponent>().txfTraMat, glm::vec3(dt*speed, 0, 0));
+
+	else if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["RUN_RIGHT"])) {
+		//comOwner->gaxGetComponent<TransformComponent>().txfPosition.x += dt*speed;
+		//comOwner->gaxGetComponent<TransformComponent>().txfTraMat = glm::translate(comOwner->gaxGetComponent<TransformComponent>().txfTraMat, glm::vec3(dt*speed, 0, 0));
+		comOwner->gaxGetComponent<PhysicsComponent>().phyCurrVel.x = 100.0f;
 	}
-	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["ROT_RIGHT"])) {
-		comOwner->gaxGetComponent<TransformComponent>().txfRotMat = glm::rotate(comOwner->gaxGetComponent<TransformComponent>().txfRotMat, glm::radians(-0.1f), glm::vec3(0, 0, 1));
-	}
-	if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["ROT_LEFT"])) {
-		comOwner->gaxGetComponent<TransformComponent>().txfRotMat = glm::rotate(comOwner->gaxGetComponent<TransformComponent>().txfRotMat, glm::radians(0.1f), glm::vec3(0, 0, 1));
-	}
+	//else{ comOwner->gaxGetComponent<PhysicsComponent>().phyCurrVel.x = 0.0f; }
+
+	//if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["ROT_RIGHT"])) {
+	//	comOwner->gaxGetComponent<TransformComponent>().txfRotMat = glm::rotate(comOwner->gaxGetComponent<TransformComponent>().txfRotMat, glm::radians(-0.1f), glm::vec3(0, 0, 1));
+	//}
+	//if (ctrlInputManager->inmIsKeyPressed(ctrlProfile["ROT_LEFT"])) {
+	//	comOwner->gaxGetComponent<TransformComponent>().txfRotMat = glm::rotate(comOwner->gaxGetComponent<TransformComponent>().txfRotMat, glm::radians(0.1f), glm::vec3(0, 0, 1));
+	//}
 	if (ctrlInputManager->inmIsKeyTriggered(ctrlProfile["TEXTURE_TOGGLE"]) ){
 		std::cout << "debug draw pressed" << std::endl;
 		ctrlGraphicsManager->gfxDebugDraw = !ctrlGraphicsManager->gfxDebugDraw;

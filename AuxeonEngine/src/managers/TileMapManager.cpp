@@ -62,10 +62,10 @@ vec2 TileMapManager::tmmGetWorldPos(TilePair xyloc) {
 	return vec2((float)c * s + (float)s / 2, SCREEN_HEIGHT - ((float)r * s + (float)s / 2));
 }
 TilePair TileMapManager::tmmGetMapLoc(vec2 wpos) {
-	int x = (int)wpos.x;
-	int y = (int)(SCREEN_HEIGHT - wpos.y);
 	int s = tmmBlockSize;
-	return TilePair(x/s,y/s);
+	float x = (int)wpos.x - s/2;
+	float y = (int)(SCREEN_HEIGHT - wpos.y - s/2);
+	return TilePair((int)x/s,(int)y/s);
 }
 
 

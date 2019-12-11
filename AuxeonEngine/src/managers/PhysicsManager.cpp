@@ -33,12 +33,13 @@ PhysicsManager::~PhysicsManager() {
 	std::cout << "PhysicsManager : default destructed" << std::endl;
 }
 
-#define GRAVITY 0.00f
+#define GRAVITY 2000.0f
 void PhysicsManager::physicsUpdate(float32 _dt) {
-	float dt = physicsFrameRateManagerInstance->fpsGetDeltaTime();
 	for (auto& go : physicsGameObjectFactoryInstance->gofGameObjects) {
 		if (go.second->gaxComponentExists<PhysicsComponent>()) {
-			go.second->gaxGetComponent<PhysicsComponent>().phyIntegrate(GRAVITY, _dt);
+			if (!go.second->gaxIsWall) {
+				go.second->gaxGetComponent<PhysicsComponent>().phyIntegrate(GRAVITY,_dt);
+			}
 		}
 	}
 	if (NULL != physicsCollisionManagerInstance) {

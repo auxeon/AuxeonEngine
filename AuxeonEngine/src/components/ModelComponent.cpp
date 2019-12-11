@@ -115,11 +115,11 @@ void ModelComponent::comDraw() {
 	glBindVertexArray(0);
 
 
+		modShader->use();
 
 	if (!modGraphicsManager->gfxDebugDraw) {
 
 		// render the triangle
-		modShader->use();
 
 		// bind textures on corresponding texture units
 		glActiveTexture(GL_TEXTURE0);
@@ -144,7 +144,7 @@ void ModelComponent::comDraw() {
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-		modShader->unuse();
+		//modShader->unuse();
 	}
 
 	else if (modGraphicsManager->gfxDebugDraw) {
@@ -152,9 +152,6 @@ void ModelComponent::comDraw() {
 		// bind textures on corresponding texture units
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, modTexID);
-
-		// render the triangle
-		modShader->use();
 
 		int loc = glGetUniformLocation(modShader->ID, "model");
 		glUniformMatrix4fv(loc, 1, GL_FALSE, &modTransform[0][0]);
@@ -190,9 +187,9 @@ void ModelComponent::comDraw() {
 
 		glDrawElements(GL_LINE_LOOP, 6, GL_UNSIGNED_INT, 0);
 
-		modShader->unuse();
 	}
 
+		modShader->unuse();
 }
 
 void ModelComponent::comHandleEvents() {

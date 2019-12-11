@@ -42,6 +42,7 @@ class CollisionTypes {
 public:
 	static void OBBCollide(Box* a, Box* b);
 	static bool AABBCollide(Box* a, Box* b);
+	static int AABBCollideSide(Box* a, Box* b);
 	static void SphereOBBCollide(Sphere* a, Box* b);
 };
 

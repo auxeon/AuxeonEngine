@@ -40,6 +40,7 @@ public:
 	bool gaxDebugDraw;
 	GameObjectID gaxID;
 	vec3 gaxDebugDrawColor;
+	bool gaxIsWall;
 
 public:
 
@@ -52,7 +53,7 @@ public:
 	void gaxDraw();
 	
 	// construct destruct
-	GameObject(GameObjectID id, bool active = true);
+	GameObject(GameObjectID id, bool active = true, bool iswall=false);
 	~GameObject();
 	void gaxDestroy();
 

@@ -38,7 +38,7 @@ public:
 
 	void gofEraseInactiveObjects();
 	void gofEraseAllObjects();
-	GameObject& gofCreateObject();
+	GameObject& gofCreateObject(bool iswall=false);
 
 private:
 	// self
